@@ -1,7 +1,8 @@
 {
     "name": "GTMKGJ2019",
     "references": [
-        "GUID:f75f65c205e1c164daf3dc65204c7459"
+        "GUID:f75f65c205e1c164daf3dc65204c7459",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
