@@ -1,0 +1,14 @@
+{
+    "name": "GTMKGJ2019",
+    "references": [
+        "GUID:f75f65c205e1c164daf3dc65204c7459"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
