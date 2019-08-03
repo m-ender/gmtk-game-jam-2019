@@ -11,8 +11,8 @@ namespace GMTKGJ2019
     {
         [SerializeField] private Calibrator calibrator = null;
         [SerializeField] private Transform arena = null;
-        [SerializeField] private SteeringWheel[] steeringWheels = null;
         [SerializeField] private GameObject[] playerObjects = null;
+        [SerializeField] private PlayerUI[] playerUIs = null;
 
         [SerializeField] private GameObject[] itemPrefabs = null;
         [SerializeField] private TextMeshProUGUI countdownText = null;
@@ -38,7 +38,7 @@ namespace GMTKGJ2019
         private int nextScore;
         private List<KeyCode> playerKeys;
 
-        private List<Bike> bikes;
+        private List<Player> players;
         private List<GameObject> items;
 
         private HashSet<int> remainingPlayers;
@@ -49,6 +49,7 @@ namespace GMTKGJ2019
         {
             parameters = GameParameters.Instance;
             audioSource = GetComponent<AudioSource>();
+            audioSource.volume = parameters.MasterVolume;
         }
 
         private void Start()
@@ -69,7 +70,7 @@ namespace GMTKGJ2019
         private void StartMatch()
         {
             remainingPlayers = new HashSet<int>();
-            bikes = new List<Bike>();
+            players = new List<Player>();
             items = new List<GameObject>();
             nextScore = 0;
 
@@ -89,18 +90,17 @@ namespace GMTKGJ2019
             {
                 remainingPlayers.Add(i);
 
-                steeringWheels[i].Resume();
-                var bike = Instantiate(
+                var player = Instantiate(
                     playerObjects[i],
                     spawningLocations[i],
                     Quaternion.identity,
-                    arena).GetComponentInChildren<Bike>();
-                bike.Initialize(playerKeys[i], steeringWheels[i]);
-                bikes.Add(bike);
+                    arena).GetComponentInChildren<Player>();
+                player.Initialize(playerKeys[i]);
+                players.Add(player);
 
-                int player = i;
-                bike.Destroyed += () => OnBikeDestroyed(player);
-                bike.ItemCollected += (item) => OnBikeItemCollected(player, item);
+                int playerId = i;
+                player.Destroyed += () => OnPlayerDestroyed(playerId);
+                player.ItemCollected += (item) => OnPlayerItemCollected(playerId, item);
             }
 
             countdown = 3;
@@ -134,27 +134,26 @@ namespace GMTKGJ2019
             {
                 audioSource.PlayOneShot(startGameSound);
                 countdownText.gameObject.SetActive(false);
-                foreach (var bike in bikes)
+                foreach (var bike in players)
                     bike.StartBike();
 
                 matchInProgress = true;
             }
         }
 
-        private void OnBikeItemCollected(int player, GameObject item)
+        private void OnPlayerItemCollected(int player, GameObject item)
         {
             audioSource.PlayOneShot(itemUseSound);
-            item.GetComponent<Item>().CastEffect(player, steeringWheels);
+            item.GetComponent<Item>().CastEffect(player, players);
             Destroy(item);
             items.Remove(item);
         }
 
-        private void OnBikeDestroyed(int player)
+        private void OnPlayerDestroyed(int player)
         {
             audioSource.PlayOneShot(explosionSound);
             remainingPlayers.Remove(player);
 
-            steeringWheels[player].Suspend();
             scores[player] += nextScore;
 
             if (remainingPlayers.Count == 0)
@@ -166,7 +165,7 @@ namespace GMTKGJ2019
             matchInProgress = false;
 
             for (int i = 0; i < playerCount; ++i)
-                steeringWheels[i].SetScore(scores[i]);
+                playerUIs[i].SetScore(scores[i]);
 
             foreach (var item in items)
                 Destroy(item);
@@ -198,7 +197,7 @@ namespace GMTKGJ2019
             {
                 int winner = remainingPlayers.ToArray()[0];
                 nextScore = playerCount - 1;
-                // bikes[winner].DestroyPlayer();
+                //players[winner].DestroyPlayer();
             }
         }
     }

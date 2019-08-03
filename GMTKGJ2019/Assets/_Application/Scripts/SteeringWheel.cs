@@ -1,22 +1,16 @@
 ﻿using DG.Tweening;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using Random = System.Random;
 
 namespace GMTKGJ2019
 {
     public class SteeringWheel : MonoBehaviour
     {
-        [SerializeField] private RectTransform hand = null;
-        [SerializeField] private Image northSector = null;
-        [SerializeField] private Image eastSector = null;
-        [SerializeField] private Image southSector = null;
-        [SerializeField] private Image westSector = null;
-        [SerializeField] private CanvasGroup wheelUI = null;
-        [SerializeField] private TextMeshProUGUI keyIndicator = null;
-        [SerializeField] private TextMeshProUGUI scoreIndicator = null;
+        [SerializeField] private Transform hand = null;
+        [SerializeField] private SpriteRenderer northSector = null;
+        [SerializeField] private SpriteRenderer eastSector = null;
+        [SerializeField] private SpriteRenderer southSector = null;
+        [SerializeField] private SpriteRenderer westSector = null;
 
         [Space(10)]
 
@@ -30,8 +24,6 @@ namespace GMTKGJ2019
 
         private GameParameters parameters;
 
-        private bool suspended = true;
-
         private float angle;
         private float currentSpeed;
         private bool reverse;
@@ -41,67 +33,21 @@ namespace GMTKGJ2019
         private Tween speedTimer;
         private Tween disabledSectorTimer;
 
-        private Dictionary<Direction, Image> sectorMap;
-
-        public void SetKeyIndicator(string key)
-        {
-            keyIndicator.text = key;
-        }
-
-        public void SetScore(int score)
-        {
-            scoreIndicator.text = score.ToString();
-        }
-
-        public void Reset()
-        {
-            angle = initialDirection.ToAngle();
-            currentSpeed = parameters.BaseRotationSpeed;
-            reverse = false;
-            disabledSector = Direction.None;
-
-            CurrentDirection = AngleToDirection(angle);
-
-            Resume();
-            RenderSectors();
-        }
-
-        public void Resume()
-        {
-            wheelUI.alpha = 1f;
-
-            suspended = false;
-        }
-
-        public void Suspend()
-        {
-            speedTimer?.Complete(true);
-            disabledSectorTimer?.Complete(true);
-
-            wheelUI.alpha = 0.2f;
-
-            suspended = true;
-        }
+        private Dictionary<Direction, SpriteRenderer> sectorMap;
 
         public void Reverse()
         {
-            if (suspended) return;
-
             reverse = !reverse;
         }
 
         public void Fast()
         {
-            if (suspended) return;
-
             currentSpeed = parameters.FastRotationModifier * parameters.BaseRotationSpeed;
             SetUpSpeedTimer(parameters.SpeedModifierDuration);
         }
 
         public void Slow()
         {
-            if (suspended) return;
-
             speedTimer?.Complete();
             currentSpeed = parameters.SlowRotationModifier * parameters.BaseRotationSpeed;
             SetUpSpeedTimer(parameters.SpeedModifierDuration);
@@ -109,8 +55,6 @@ namespace GMTKGJ2019
 
         public void Freeze()
         {
-            if (suspended) return;
-
             speedTimer?.Complete();
             currentSpeed = 0f;
             SetUpSpeedTimer(parameters.FreezeDuration);
@@ -118,8 +62,6 @@ namespace GMTKGJ2019
 
         public void DisableSector(Direction dir)
         {
-            if (suspended) return;
-
             disabledSector = dir;
             SetUpDisabledSectorTimer(parameters.DisableSectorDuration);
         }
@@ -131,7 +73,7 @@ namespace GMTKGJ2019
 
         private void Awake()
         {
-            sectorMap = new Dictionary<Direction, Image>
+            sectorMap = new Dictionary<Direction, SpriteRenderer>
             {
                 { Direction.North, northSector },
                 { Direction.East, eastSector },
@@ -141,14 +83,24 @@ namespace GMTKGJ2019
 
             parameters = GameParameters.Instance;
 
-            Reset();
-            Suspend();
+            angle = initialDirection.ToAngle();
+            currentSpeed = parameters.BaseRotationSpeed;
+            reverse = false;
+            disabledSector = Direction.None;
+
+            CurrentDirection = AngleToDirection(angle);
+
+            RenderSectors();
+        }
+
+        private void OnDestroy()
+        {
+            speedTimer?.Complete();
+            disabledSectorTimer?.Complete();
         }
 
         private void Update()
         {
-            if (suspended) return;
-
             angle += Time.deltaTime * currentSpeed * (reverse ? 1 : -1);
             CurrentDirection = AngleToDirection(angle);
 

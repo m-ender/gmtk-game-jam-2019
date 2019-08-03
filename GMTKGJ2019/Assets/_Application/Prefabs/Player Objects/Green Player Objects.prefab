@@ -103,5 +103,55 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 7821e98af1f4e5945a5ab11d08d93875,
         type: 3}
+    - target: {fileID: 4774243017630333767, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: initialDirection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774243017630333767, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: inactiveColor.r
+      value: 0.7722535
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774243017630333767, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: inactiveColor.b
+      value: 0.615
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774243017630333767, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: activeColor.r
+      value: 0.41568628
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774243017630333767, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: activeColor.g
+      value: 0.74509805
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774243017630333767, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: activeColor.b
+      value: 0.1882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 5859040157914519719, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: initialDirection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5859040157914519719, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: playerColor.r
+      value: 0.41568628
+      objectReference: {fileID: 0}
+    - target: {fileID: 5859040157914519719, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: playerColor.g
+      value: 0.74509805
+      objectReference: {fileID: 0}
+    - target: {fileID: 5859040157914519719, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: playerColor.b
+      value: 0.1882353
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91aa86e7669babf4b8e8b4d9772236af, type: 3}

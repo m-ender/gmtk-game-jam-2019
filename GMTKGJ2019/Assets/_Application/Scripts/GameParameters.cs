@@ -28,6 +28,9 @@ namespace GMTKGJ2019
         public float FreezeDuration;
         public float DisableSectorDuration;
 
+        [Header("Audio")]
+        public float MasterVolume;
+
         public static GameParameters Instance { get; private set; }
 
         private void Awake()

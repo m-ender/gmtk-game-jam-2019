@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 7144120904486306507, guid: 91aa86e7669babf4b8e8b4d9772236af,
         type: 3}
       propertyPath: m_Name
-      value: Player Objects
+      value: Orange Player Objects
       objectReference: {fileID: 0}
     - target: {fileID: 7144120904486306506, guid: 91aa86e7669babf4b8e8b4d9772236af,
         type: 3}
@@ -66,6 +66,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774243017630333767, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: initialDirection
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774243017630333767, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: inactiveColor.g
+      value: 0.8005176
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774243017630333767, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: inactiveColor.b
+      value: 0.48584908
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774243017630333767, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: activeColor.r
+      value: 0.8745098
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774243017630333767, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: activeColor.g
+      value: 0.44313726
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774243017630333767, guid: 91aa86e7669babf4b8e8b4d9772236af,
+        type: 3}
+      propertyPath: activeColor.b
+      value: 0.14901961
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91aa86e7669babf4b8e8b4d9772236af, type: 3}

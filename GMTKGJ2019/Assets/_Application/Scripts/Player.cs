@@ -5,8 +5,10 @@ using UnityEngine;
 namespace GMTKGJ2019
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Bike : MonoBehaviour
+    public class Player : MonoBehaviour
     {
+        [SerializeField] private Transform bike = null;
+        public SteeringWheel SteeringWheel = null;
         [SerializeField] private Color playerColor = Color.white;
         [SerializeField] private PlayerWall wallPrefab = null;
         [SerializeField] private Direction initialDirection = Direction.None;
@@ -14,7 +16,6 @@ namespace GMTKGJ2019
         private GameParameters parameters;
 
         public event Action Destroyed;
-
         public event Action<GameObject> ItemCollected;
 
         private Rigidbody2D rigidBody;
@@ -26,23 +27,9 @@ namespace GMTKGJ2019
         private Tween speedTimer;
 
         private KeyCode key;
-        private SteeringWheel steeringWheel;
 
         private bool started = false;
         private bool destroyed = false;
-
-        public void Initialize(KeyCode key, SteeringWheel steeringWheel)
-        {
-            this.key = key;
-            this.steeringWheel = steeringWheel;
-        }
-
-        public void StartBike()
-        {
-            started = true;
-            currentSpeed = parameters.BikeBaseSpeed;
-            Turn(initialDirection);
-        }
 
         private void Awake()
         {
@@ -50,10 +37,22 @@ namespace GMTKGJ2019
 
             parameters = GameParameters.Instance;
 
-            currentSpeed = 0f;
             Turn(initialDirection);
+            SetSpeed(0f);
 
             previousWall = currentWall;
+        }
+
+        public void Initialize(KeyCode key)
+        {
+            this.key = key;
+        }
+
+        public void StartBike()
+        {
+            started = true;
+            SetSpeed(parameters.BikeBaseSpeed);
+            Turn(initialDirection);
         }
 
         private void Update()
@@ -65,7 +64,7 @@ namespace GMTKGJ2019
 
             if (Input.GetKeyDown(key))
             {
-                Direction dir = steeringWheel.CurrentDirection;
+                Direction dir = SteeringWheel.CurrentDirection;
                 if (dir != Direction.None)
                 {
                     if (dir == currentDirection)
@@ -78,17 +77,25 @@ namespace GMTKGJ2019
             }
         }
 
+        public void DestroyPlayer()
+        {
+            if (destroyed) return;
+
+            speedTimer?.Complete();
+            Destroy(transform.parent.gameObject);
+            Destroyed?.Invoke();
+            destroyed = true;
+        }
+
         private void Accelerate()
         {
-            currentSpeed = parameters.BikeBaseSpeed * parameters.BikeFastModifier;
-            rigidBody.velocity = currentSpeed * currentDirection.ToVector2();
+            SetSpeed(parameters.BikeBaseSpeed * parameters.BikeFastModifier);
             SetUpSpeedTimer(parameters.BikeBoostDuration);
         }
 
         private void Decelerate()
         {
-            currentSpeed = parameters.BikeBaseSpeed * parameters.BikeSlowModifier;
-            rigidBody.velocity = currentSpeed * currentDirection.ToVector2();
+            SetSpeed(parameters.BikeBaseSpeed * parameters.BikeSlowModifier);
             SetUpSpeedTimer(parameters.BikeBoostDuration);
         }
 
@@ -97,19 +104,15 @@ namespace GMTKGJ2019
             speedTimer?.Complete();
             speedTimer = DOTween.Sequence().InsertCallback(
                 timeout,
-                () =>
-                {
-                    currentSpeed = parameters.BikeBaseSpeed;
-                    rigidBody.velocity = currentSpeed * currentDirection.ToVector2();
-                });
+                () => SetSpeed(parameters.BikeBaseSpeed));
         }
 
         private void Turn(Direction dir)
         {
             currentDirection = dir;
 
-            rigidBody.MoveRotation(dir.ToAngle());
             rigidBody.velocity = currentSpeed * dir.ToVector2();
+            bike.localEulerAngles = Vector3.forward * dir.ToAngle();
 
             previousWall = currentWall;
             currentWall = Instantiate(wallPrefab, transform.parent);
@@ -133,14 +136,10 @@ namespace GMTKGJ2019
             }
         }
 
-        public void DestroyPlayer()
+        private void SetSpeed(float speed)
         {
-            if (destroyed) return;
-
-            speedTimer?.Complete();
-            Destroy(transform.parent.gameObject);
-            Destroyed?.Invoke();
-            destroyed = true;
+            currentSpeed = speed;
+            rigidBody.velocity = currentSpeed * currentDirection.ToVector2();
         }
     }
 }
