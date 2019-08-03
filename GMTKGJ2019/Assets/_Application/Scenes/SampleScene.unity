@@ -322,6 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d6c0a85964bfed6d834c189ba36ea18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxItems: 5
   calibrator: {fileID: 105684196}
   arena: {fileID: 457708171}
   steeringWheels:
@@ -341,9 +342,11 @@ MonoBehaviour:
   - {fileID: 5795451168020311113, guid: 7125b66bd63858647a45055299d23a62, type: 3}
   - {fileID: 5795451168020311113, guid: d46235aa4a63f774f95cbb2d16863f58, type: 3}
   countdownText: {fileID: 1530359319}
-  CountdownSound: {fileID: 8300000, guid: 9c988bde7e94e272bab7c68d1586727f, type: 3}
-  StartGameSound: {fileID: 8300000, guid: cc02b902fdcfe89f4ad4e3046f9cb068, type: 3}
-  ExplosionSound: {fileID: 8300000, guid: 7aa836739a9cc26169b0364e017c5ac9, type: 3}
+  countdownSound: {fileID: 8300000, guid: 9c988bde7e94e272bab7c68d1586727f, type: 3}
+  startGameSound: {fileID: 8300000, guid: cc02b902fdcfe89f4ad4e3046f9cb068, type: 3}
+  explosionSound: {fileID: 8300000, guid: 7aa836739a9cc26169b0364e017c5ac9, type: 3}
+  itemSpawnSound: {fileID: 8300000, guid: df6e10f3868d2effe917b7d7af1f78ea, type: 3}
+  itemUseSound: {fileID: 8300000, guid: 9dcd18e99f679477f880e11d73b37804, type: 3}
 --- !u!4 &164595060
 Transform:
   m_ObjectHideFlags: 0
