@@ -15,7 +15,10 @@ namespace GMTKGJ2019
         private Canvas canvas = null;
 
         [SerializeField]
-        private SteeringWheel steeringWheel = null;
+        private SteeringWheel[] steeringWheels = null;
+
+        [SerializeField]
+        private GameObject[] playerObjects = null;
 
         private void Start()
         {
@@ -26,18 +29,10 @@ namespace GMTKGJ2019
         {
             Destroy(calibrator.gameObject);
 
-            Vector3[] positions = new Vector3[]
-            {
-                new Vector3(0, 0, 0),
-                new Vector3(500, 0, 0),
-                new Vector3(0, -250, 0),
-                new Vector3(500, -250, 0)
-            };
-
             for (int i = 0; i < playersKeys.Count; i++)
             {
-                var wheel = Instantiate(steeringWheel, canvas.transform);
-                wheel.transform.Translate(positions[i]);
+                Instantiate(steeringWheels[i], canvas.transform);
+                Instantiate(playerObjects[i]);
             }
         }
     }

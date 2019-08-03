@@ -5,13 +5,13 @@ namespace GMTKGJ2019
     [RequireComponent(typeof(Rigidbody2D))]
     public class Bike : MonoBehaviour
     {
-        [SerializeField] private float baseSpeed;
-        [SerializeField] private float fastModifier;
-        [SerializeField] private float slowModifier;
+        [SerializeField] private float baseSpeed = 0f;
+        [SerializeField] private float fastModifier = 0f;
+        [SerializeField] private float slowModifier = 0f;
 
-        [SerializeField] private Color playerColor;
-        [SerializeField] private PlayerWall wallPrefab;
-        [SerializeField] private Direction initialDirection;
+        [SerializeField] private Color playerColor = Color.white;
+        [SerializeField] private PlayerWall wallPrefab = null;
+        [SerializeField] private Direction initialDirection = Direction.None;
 
         private Rigidbody2D rigidBody;
         private PlayerWall previousWall;
