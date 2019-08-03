@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,7 +8,9 @@ namespace GMTKGJ2019
 {
     public class Calibrator : MonoBehaviour
     {
-        private static readonly double TotalCalibrationTime = TimeSpan.FromSeconds(5).TotalSeconds;
+        private static readonly int MaximumPlayers = 4;
+
+        private static readonly double TotalCalibrationTime = TimeSpan.FromSeconds(2).TotalSeconds;
 
         [SerializeField] private TextMeshProUGUI playersText = null;
 
@@ -18,10 +21,9 @@ namespace GMTKGJ2019
 
         private readonly List<KeyCode> keys = new List<KeyCode>();
 
-        public List<KeyCode> GetPlayersKeys()
-        {
-            return new List<KeyCode>(keys);
-        }
+        public delegate void KeysSelected(List<KeyCode> keys);
+
+        public event KeysSelected OnPlayersKeysSelected;
 
         private void Update()
         {
@@ -41,9 +43,12 @@ namespace GMTKGJ2019
             {
                 foreach (KeyCode key in Enum.GetValues(typeof(KeyCode)))
                 {
-                    if (Input.GetKeyDown(key))
+                    if (Input.GetKey(key) && keys.Count < MaximumPlayers)
                     {
-                        keys.Add(key);
+                        if (keys.IndexOf(key) < 0)
+                        {
+                            keys.Add(key);
+                        }
                     }
 
                     if (Input.GetKeyUp(key))
@@ -63,6 +68,7 @@ namespace GMTKGJ2019
             else
             {
                 timeLeft.SetProgress(0f);
+                OnPlayersKeysSelected(new List<KeyCode>(keys));
             }
         }
     }
