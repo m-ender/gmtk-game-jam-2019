@@ -433,8 +433,12 @@ MonoBehaviour:
   eastSector: {fileID: 3402539310837345023}
   southSector: {fileID: 3402539309778497689}
   westSector: {fileID: 3402539310739295048}
+  disabledColor: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
   inactiveColor: {r: 1, g: 0.8005176, b: 0.48584908, a: 1}
   activeColor: {r: 1, g: 0.610687, b: 0, a: 1}
   baseRotationSpeed: 180
   fastModifier: 2
   slowModifier: 0.5
+  speedChangeDuration: 3
+  freezeDuration: 1
+  disabledSectorDuration: 3

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
@@ -21,12 +22,18 @@ namespace GMTKGJ2019
         [SerializeField] private float baseRotationSpeed = 0f;
         [SerializeField] private float fastModifier = 0f;
         [SerializeField] private float slowModifier = 0f;
+        [SerializeField] private float speedChangeDuration = 0f;
+        [SerializeField] private float freezeDuration = 0f;
+        [SerializeField] private float disabledSectorDuration = 0f;
 
         private float angle;
         private float currentSpeed;
         private bool reverse;
         private Direction disabledSector;
         public Direction CurrentDirection { get; private set; }
+
+        private Tween speedTimer;
+        private Tween disabledSectorTimer;
 
         private Dictionary<Direction, Image> sectorMap;
 
@@ -38,21 +45,27 @@ namespace GMTKGJ2019
         public void Fast()
         {
             currentSpeed = fastModifier * baseRotationSpeed;
+            SetUpSpeedTimer(speedChangeDuration);
         }
 
         public void Slow()
         {
+            speedTimer?.Complete();
             currentSpeed = slowModifier * baseRotationSpeed;
+            SetUpSpeedTimer(speedChangeDuration);
         }
 
         public void Freeze()
         {
+            speedTimer?.Complete();
             currentSpeed = 0f;
+            SetUpSpeedTimer(freezeDuration);
         }
 
         public void DisableSector(Direction dir)
         {
             disabledSector = dir;
+            SetUpDisabledSectorTimer(disabledSectorDuration);
         }
 
         public void EnableSectors()
@@ -95,6 +108,22 @@ namespace GMTKGJ2019
                 Slow();
             else if (Input.GetKeyDown(KeyCode.Z))
                 Freeze();
+        }
+
+        private void SetUpSpeedTimer(float timeout)
+        {
+            speedTimer?.Complete();
+            speedTimer = DOTween.Sequence().InsertCallback(
+                timeout,
+                () => currentSpeed = baseRotationSpeed);
+        }
+
+        private void SetUpDisabledSectorTimer(float timeout)
+        {
+            disabledSectorTimer?.Complete();
+            disabledSectorTimer = DOTween.Sequence().InsertCallback(
+                timeout,
+                () => disabledSector = Direction.None);
         }
 
         private void RenderSectors()
