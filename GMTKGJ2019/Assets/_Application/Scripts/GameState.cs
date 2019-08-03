@@ -32,16 +32,20 @@ namespace GMTKGJ2019
         private void StartGame(List<KeyCode> playersKeys)
         {
             playerCount = playersKeys.Count;
-
             Destroy(calibrator.gameObject);
 
+            scores = new int[playerCount];
+            StartMatch();
+        }
+
+        private void StartMatch()
+        {
             countdown = 3;
             countdownText.gameObject.SetActive(true);
             countdownText.text = countdown.ToString();
 
             remainingPlayers = new HashSet<int>();
             bikes = new List<Bike>();
-            scores = new int[playerCount];
             nextScore = 0;
 
             for (int i = 0; i < playerCount; ++i)
