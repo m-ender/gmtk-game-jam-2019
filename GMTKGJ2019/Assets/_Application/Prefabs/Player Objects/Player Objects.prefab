@@ -151,6 +151,7 @@ MonoBehaviour:
   baseSpeed: 3
   fastModifier: 2
   slowModifier: 0.5
+  boostDuration: 1
   playerColor: {r: 0.8745098, g: 0.44313726, b: 0.14901961, a: 1}
   wallPrefab: {fileID: 210040419816433762, guid: 2130b049d84727b498c9d2c07632d259,
     type: 3}

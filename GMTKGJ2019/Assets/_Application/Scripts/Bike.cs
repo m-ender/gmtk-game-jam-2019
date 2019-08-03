@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using UnityEngine;
 
 namespace GMTKGJ2019
@@ -9,6 +10,7 @@ namespace GMTKGJ2019
         [SerializeField] private float baseSpeed = 0f;
         [SerializeField] private float fastModifier = 0f;
         [SerializeField] private float slowModifier = 0f;
+        [SerializeField] private float boostDuration = 0f;
 
         [SerializeField] private Color playerColor = Color.white;
         [SerializeField] private PlayerWall wallPrefab = null;
@@ -22,6 +24,7 @@ namespace GMTKGJ2019
 
         private Direction currentDirection;
         private float currentSpeed;
+        private Tween speedTimer;
 
         private KeyCode key;
         private SteeringWheel steeringWheel;
@@ -63,8 +66,40 @@ namespace GMTKGJ2019
             {
                 Direction dir = steeringWheel.CurrentDirection;
                 if (dir != Direction.None)
-                    Turn(dir);
+                {
+                    if (dir == currentDirection)
+                        Accelerate();
+                    else if (dir == currentDirection.Reverse())
+                        Decelerate();
+                    else
+                        Turn(dir);
+                }
             }
+        }
+
+        private void Accelerate()
+        {
+            currentSpeed = baseSpeed * fastModifier;
+            rigidBody.velocity = currentSpeed * currentDirection.ToVector2();
+            SetUpSpeedTimer(boostDuration);
+        }
+
+        private void Decelerate()
+        {
+            currentSpeed = baseSpeed * slowModifier;
+            rigidBody.velocity = currentSpeed * currentDirection.ToVector2();
+            SetUpSpeedTimer(boostDuration);
+        }
+
+        private void SetUpSpeedTimer(float timeout)
+        {
+            speedTimer?.Complete();
+            speedTimer = DOTween.Sequence().InsertCallback(
+                timeout,
+                () => {
+                    currentSpeed = baseSpeed;
+                    rigidBody.velocity = currentSpeed * currentDirection.ToVector2();
+                });
         }
 
         private void Turn(Direction dir)

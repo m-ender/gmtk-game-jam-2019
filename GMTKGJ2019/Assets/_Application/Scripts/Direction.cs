@@ -18,6 +18,18 @@ namespace GMTKGJ2019
         public static bool IsHorizontal(this Direction dir)
             => dir == Direction.East || dir == Direction.West;
 
+        public static Direction Reverse(this Direction dir)
+        {
+            switch (dir)
+            {
+            case Direction.North: return Direction.South;
+            case Direction.West: return Direction.East;
+            case Direction.South: return Direction.North;
+            case Direction.East: return Direction.West;
+            default: return Direction.None;
+            }
+        }
+
         public static float ToAngle(this Direction dir)
         {
             switch (dir)
