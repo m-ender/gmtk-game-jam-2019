@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace GMTKGJ2019
 {
+    [RequireComponent(typeof(AudioSource))]
     public class GameState : MonoBehaviour
     {
 
@@ -16,11 +17,21 @@ namespace GMTKGJ2019
         [SerializeField] private GameObject[] playerObjects = null;
         [SerializeField] private TextMeshProUGUI countdownText = null;
 
+        [SerializeField] private AudioClip CountdownSound = null;
+        [SerializeField] private AudioClip StartGameSound = null;
+
+        private AudioSource audioSource;
+
         private int countdown;
 
         private List<Bike> bikes;
 
         private HashSet<int> remainingPlayers;
+
+        private void Awake()
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
 
         private void Start()
         {
@@ -29,6 +40,7 @@ namespace GMTKGJ2019
 
         private void StartGame(List<KeyCode> playersKeys)
         {
+            audioSource.PlayOneShot(CountdownSound, 1f);
             Destroy(calibrator.gameObject);
 
             countdown = 3;
@@ -55,10 +67,12 @@ namespace GMTKGJ2019
                 --countdown;
                 if (countdown > 0)
                 {
+                    audioSource.PlayOneShot(CountdownSound, 1f);
                     countdownText.text = countdown.ToString();
                 }
                 else
                 {
+                    audioSource.PlayOneShot(StartGameSound, 1f);
                     Destroy(countdownText.gameObject);
                     foreach (var bike in bikes)
                         bike.StartBike();
