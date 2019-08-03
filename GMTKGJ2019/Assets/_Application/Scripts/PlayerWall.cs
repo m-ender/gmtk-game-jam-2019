@@ -5,8 +5,7 @@ namespace GMTKGJ2019
     [RequireComponent(typeof(SpriteRenderer))]
     public class PlayerWall : MonoBehaviour
     {
-        [SerializeField] private float width = 0f;
-
+        private float width;
         private Vector2 start;
         private bool horizontal;
 
@@ -14,6 +13,8 @@ namespace GMTKGJ2019
         {
             this.start = start;
             this.horizontal = horizontal;
+
+            width = GameParameters.Instance.PlayerWallWidth;
 
             transform.localScale = Vector3.zero;
 

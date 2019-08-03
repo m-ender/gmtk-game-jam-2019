@@ -27,14 +27,10 @@ namespace GMTKGJ2019
         [SerializeField] private Color disabledColor = Color.white;
         [SerializeField] private Color inactiveColor = Color.white;
         [SerializeField] private Color activeColor = Color.white;
-        [SerializeField] private float baseRotationSpeed = 0f;
-        [SerializeField] private float fastModifier = 0f;
-        [SerializeField] private float slowModifier = 0f;
-        [SerializeField] private float speedChangeDuration = 0f;
-        [SerializeField] private float freezeDuration = 0f;
-        [SerializeField] private float disabledSectorDuration = 0f;
 
-        private bool suspended;
+        private GameParameters parameters;
+
+        private bool suspended = true;
 
         private float angle;
         private float currentSpeed;
@@ -60,7 +56,7 @@ namespace GMTKGJ2019
         public void Reset()
         {
             angle = initialDirection.ToAngle();
-            currentSpeed = baseRotationSpeed;
+            currentSpeed = parameters.BaseRotationSpeed;
             reverse = false;
             disabledSector = Direction.None;
 
@@ -98,8 +94,8 @@ namespace GMTKGJ2019
         {
             if (suspended) return;
 
-            currentSpeed = fastModifier * baseRotationSpeed;
-            SetUpSpeedTimer(speedChangeDuration);
+            currentSpeed = parameters.FastRotationModifier * parameters.BaseRotationSpeed;
+            SetUpSpeedTimer(parameters.SpeedModifierDuration);
         }
 
         public void Slow()
@@ -107,8 +103,8 @@ namespace GMTKGJ2019
             if (suspended) return;
 
             speedTimer?.Complete();
-            currentSpeed = slowModifier * baseRotationSpeed;
-            SetUpSpeedTimer(speedChangeDuration);
+            currentSpeed = parameters.SlowRotationModifier * parameters.BaseRotationSpeed;
+            SetUpSpeedTimer(parameters.SpeedModifierDuration);
         }
 
         public void Freeze()
@@ -117,7 +113,7 @@ namespace GMTKGJ2019
 
             speedTimer?.Complete();
             currentSpeed = 0f;
-            SetUpSpeedTimer(freezeDuration);
+            SetUpSpeedTimer(parameters.FreezeDuration);
         }
 
         public void DisableSector(Direction dir)
@@ -125,7 +121,7 @@ namespace GMTKGJ2019
             if (suspended) return;
 
             disabledSector = dir;
-            SetUpDisabledSectorTimer(disabledSectorDuration);
+            SetUpDisabledSectorTimer(parameters.DisableSectorDuration);
         }
 
         public void EnableSectors()
@@ -142,6 +138,8 @@ namespace GMTKGJ2019
                 { Direction.South, southSector },
                 { Direction.West, westSector },
             };
+
+            parameters = GameParameters.Instance;
 
             Reset();
             Suspend();
@@ -162,7 +160,7 @@ namespace GMTKGJ2019
             speedTimer?.Complete();
             speedTimer = DOTween.Sequence().InsertCallback(
                 timeout,
-                () => currentSpeed = baseRotationSpeed);
+                () => currentSpeed = parameters.BaseRotationSpeed);
         }
 
         private void SetUpDisabledSectorTimer(float timeout)

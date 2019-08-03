@@ -60,7 +60,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7144120905185712298}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4, y: 4, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7144120904486306506}
@@ -148,10 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1804f9fc8a73afd49a3f18bc5d43871c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 3
-  fastModifier: 2
-  slowModifier: 0.5
-  boostDuration: 1
   playerColor: {r: 0.8745098, g: 0.44313726, b: 0.14901961, a: 1}
   wallPrefab: {fileID: 210040419816433762, guid: 2130b049d84727b498c9d2c07632d259,
     type: 3}

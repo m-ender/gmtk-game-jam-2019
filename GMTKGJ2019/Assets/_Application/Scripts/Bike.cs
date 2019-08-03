@@ -7,14 +7,11 @@ namespace GMTKGJ2019
     [RequireComponent(typeof(Rigidbody2D))]
     public class Bike : MonoBehaviour
     {
-        [SerializeField] private float baseSpeed = 0f;
-        [SerializeField] private float fastModifier = 0f;
-        [SerializeField] private float slowModifier = 0f;
-        [SerializeField] private float boostDuration = 0f;
-
         [SerializeField] private Color playerColor = Color.white;
         [SerializeField] private PlayerWall wallPrefab = null;
         [SerializeField] private Direction initialDirection = Direction.None;
+
+        private GameParameters parameters;
 
         public event Action Destroyed;
 
@@ -43,13 +40,15 @@ namespace GMTKGJ2019
         public void StartBike()
         {
             started = true;
-            currentSpeed = baseSpeed;
+            currentSpeed = parameters.BikeBaseSpeed;
             Turn(initialDirection);
         }
 
         private void Awake()
         {
             rigidBody = GetComponent<Rigidbody2D>();
+
+            parameters = GameParameters.Instance;
 
             currentSpeed = 0f;
             Turn(initialDirection);
@@ -81,16 +80,16 @@ namespace GMTKGJ2019
 
         private void Accelerate()
         {
-            currentSpeed = baseSpeed * fastModifier;
+            currentSpeed = parameters.BikeBaseSpeed * parameters.BikeFastModifier;
             rigidBody.velocity = currentSpeed * currentDirection.ToVector2();
-            SetUpSpeedTimer(boostDuration);
+            SetUpSpeedTimer(parameters.BikeBoostDuration);
         }
 
         private void Decelerate()
         {
-            currentSpeed = baseSpeed * slowModifier;
+            currentSpeed = parameters.BikeBaseSpeed * parameters.BikeSlowModifier;
             rigidBody.velocity = currentSpeed * currentDirection.ToVector2();
-            SetUpSpeedTimer(boostDuration);
+            SetUpSpeedTimer(parameters.BikeBoostDuration);
         }
 
         private void SetUpSpeedTimer(float timeout)
@@ -100,7 +99,7 @@ namespace GMTKGJ2019
                 timeout,
                 () =>
                 {
-                    currentSpeed = baseSpeed;
+                    currentSpeed = parameters.BikeBaseSpeed;
                     rigidBody.velocity = currentSpeed * currentDirection.ToVector2();
                 });
         }

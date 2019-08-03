@@ -9,7 +9,6 @@ namespace GMTKGJ2019
     [RequireComponent(typeof(AudioSource))]
     public class GameState : MonoBehaviour
     {
-        [SerializeField] private int MaxItems = 0;
         [SerializeField] private Calibrator calibrator = null;
         [SerializeField] private Transform arena = null;
         [SerializeField] private SteeringWheel[] steeringWheels = null;
@@ -25,6 +24,8 @@ namespace GMTKGJ2019
         [SerializeField] private AudioClip explosionSound = null;
         [SerializeField] private AudioClip itemSpawnSound = null;
         [SerializeField] private AudioClip itemUseSound = null;
+
+        private GameParameters parameters;
 
         private AudioSource audioSource;
 
@@ -46,6 +47,7 @@ namespace GMTKGJ2019
 
         private void Awake()
         {
+            parameters = GameParameters.Instance;
             audioSource = GetComponent<AudioSource>();
         }
 
@@ -71,12 +73,28 @@ namespace GMTKGJ2019
             items = new List<GameObject>();
             nextScore = 0;
 
+            float width2 = parameters.ArenaWidth/2;
+            float height2 = parameters.ArenaHeight/2;
+            float dist = parameters.SpawningDistanceFromWall;
+
+            List<Vector2> spawningLocations = new List<Vector2>
+            {
+                new Vector2(-width2 + dist, height2 - dist),
+                new Vector2(width2 - dist, -height2 + dist),
+                new Vector2(-width2 + dist, -height2 + dist),
+                new Vector2(width2 - dist, height2 - dist),
+            };
+
             for (int i = 0; i < playerCount; ++i)
             {
                 remainingPlayers.Add(i);
 
                 steeringWheels[i].Resume();
-                var bike = Instantiate(playerObjects[i], arena).GetComponentInChildren<Bike>();
+                var bike = Instantiate(
+                    playerObjects[i],
+                    spawningLocations[i],
+                    Quaternion.identity,
+                    arena).GetComponentInChildren<Bike>();
                 bike.Initialize(playerKeys[i], steeringWheels[i]);
                 bikes.Add(bike);
 
@@ -167,7 +185,7 @@ namespace GMTKGJ2019
             {
                 timeToNextItem = (float)Random.RNG.NextDouble() * 2 + 1;
 
-                if (items.Count < MaxItems)
+                if (items.Count < parameters.MaxItems)
                     SpawnItem();
             }
 
