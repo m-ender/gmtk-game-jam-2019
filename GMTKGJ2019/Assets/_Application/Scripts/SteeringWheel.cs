@@ -17,6 +17,10 @@ namespace GMTKGJ2019
 
         [Space(10)]
 
+        [SerializeField] private Direction initialDirection = Direction.None;
+
+        [Space(10)]
+
         [SerializeField] private Color disabledColor = Color.white;
         [SerializeField] private Color inactiveColor = Color.white;
         [SerializeField] private Color activeColor = Color.white;
@@ -42,13 +46,30 @@ namespace GMTKGJ2019
 
         private Dictionary<Direction, Image> sectorMap;
 
+        public void Reset()
+        {
+            angle = initialDirection.ToAngle();
+            currentSpeed = baseRotationSpeed;
+            reverse = false;
+            disabledSector = Direction.None;
+
+            Resume();
+            RenderSectors();
+        }
+
+        public void Resume()
+        {
+            canvasGroup.alpha = 1f;
+
+            suspended = false;
+        }
+
         public void Suspend()
         {
-            speedTimer.Complete(true);
-            disabledSectorTimer.Complete(true);
+            speedTimer?.Complete(true);
+            disabledSectorTimer?.Complete(true);
 
             canvasGroup.alpha = 0.2f;
-            currentSpeed = 0f;
 
             suspended = true;
         }
@@ -103,11 +124,6 @@ namespace GMTKGJ2019
         {
             canvasGroup = GetComponent<CanvasGroup>();
 
-            angle = 0;
-            currentSpeed = baseRotationSpeed;
-            reverse = false;
-            disabledSector = Direction.None;
-
             sectorMap = new Dictionary<Direction, Image>
             {
                 { Direction.North, northSector },
@@ -116,26 +132,17 @@ namespace GMTKGJ2019
                 { Direction.West, westSector },
             };
 
-            RenderSectors();
+            Reset();
         }
 
         private void Update()
         {
-            angle += Time.deltaTime * currentSpeed * (reverse ? -1 : 1);
+            if (suspended) return;
+
+            angle += Time.deltaTime * currentSpeed * (reverse ? 1 : -1);
             CurrentDirection = AngleToDirection(angle);
 
             RenderSectors();
-
-            if (Input.GetKeyDown(KeyCode.R))
-                Reverse();
-            else if (Input.GetKeyDown(KeyCode.D))
-                DisableSector((Direction)new Random().Next(1, 5));
-            else if (Input.GetKeyDown(KeyCode.F))
-                Fast();
-            else if (Input.GetKeyDown(KeyCode.S))
-                Slow();
-            else if (Input.GetKeyDown(KeyCode.Z))
-                Freeze();
         }
 
         private void SetUpSpeedTimer(float timeout)
@@ -154,7 +161,7 @@ namespace GMTKGJ2019
 
         private void RenderSectors()
         {
-            hand.localEulerAngles = Vector3.back * angle;
+            hand.localEulerAngles = Vector3.forward * angle;
 
             foreach (var (dir, sector) in sectorMap)
             {
@@ -172,9 +179,9 @@ namespace GMTKGJ2019
             Direction result = Direction.North;
             switch ((angle % 360f + 360f) % 360f)
             {
-            case float x when (x >= 45f && x < 135f): result = Direction.East; break;
+            case float x when (x >= 45f && x < 135f): result = Direction.West; break;
             case float x when (x >= 135f && x < 225f): result = Direction.South; break;
-            case float x when (x >= 225f && x < 315f): result = Direction.West; break;
+            case float x when (x >= 225f && x < 315f): result = Direction.East; break;
             }
 
             return result == disabledSector

@@ -147,5 +147,25 @@ PrefabInstance:
       propertyPath: inactiveColor.b
       value: 0.9227717
       objectReference: {fileID: 0}
+    - target: {fileID: 3402539311539688252, guid: c718ec2b11d396d4eb736633a001a4c1,
+        type: 3}
+      propertyPath: initialDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3402539310870044494, guid: c718ec2b11d396d4eb736633a001a4c1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3402539310870044494, guid: c718ec2b11d396d4eb736633a001a4c1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3402539310870044494, guid: c718ec2b11d396d4eb736633a001a4c1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c718ec2b11d396d4eb736633a001a4c1, type: 3}
