@@ -46,7 +46,7 @@ namespace GMTKGJ2019
         private void Update()
         {
             angle += Time.deltaTime * currentSpeed;
-            currentDirection = AngleToSector(angle);
+            CurrentDirection = AngleToSector(angle);
 
             RenderSectors();
         }
@@ -56,7 +56,7 @@ namespace GMTKGJ2019
             hand.localEulerAngles = Vector3.back * angle;
 
             foreach (var (dir, sector) in sectorMap)
-                sector.color = (dir == currentDirection) ? activeColor : inactiveColor;
+                sector.color = (dir == CurrentDirection) ? activeColor : inactiveColor;
         }
 
         private Direction AngleToSector(float angle)
