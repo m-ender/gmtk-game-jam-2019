@@ -41,3 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Floor
+    uniqueID: 4172510733
+    locked: 0
+  - name: Wall
+    uniqueID: 344314227
+    locked: 0
+  - name: Item
+    uniqueID: 2345197911
+    locked: 0
+  - name: Bike
+    uniqueID: 1856686531
+    locked: 0
