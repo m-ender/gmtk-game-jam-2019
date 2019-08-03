@@ -23,6 +23,12 @@ namespace GMTKGJ2019
 
         public event Action<List<KeyCode>> PlayerKeysSelected;
 
+        private void UpdateUI()
+        {
+            timeLeft.SetProgress((float)((100f / TotalCalibrationTime) * calibrationTimeLeft));
+            playersText.text = String.Join(" ", keys);
+        }
+
         private void Update()
         {
             if (Input.anyKeyDown)
@@ -32,11 +38,12 @@ namespace GMTKGJ2019
 
             if (!isCalibrationRunning)
             {
+                calibrationTimeLeft = TotalCalibrationTime;
+                UpdateUI();
                 return;
             }
 
             calibrationTimeLeft -= Time.deltaTime;
-
             if (calibrationTimeLeft > 0f)
             {
                 foreach (KeyCode key in Enum.GetValues(typeof(KeyCode)))
@@ -60,12 +67,10 @@ namespace GMTKGJ2019
                     isCalibrationRunning = false;
                 }
 
-                timeLeft.SetProgress((float)((100f / TotalCalibrationTime) * calibrationTimeLeft));
-                playersText.text = String.Join(" ", keys);
+                UpdateUI();
             }
             else
             {
-                timeLeft.SetProgress(0f);
                 PlayerKeysSelected?.Invoke(new List<KeyCode>(keys));
             }
         }
