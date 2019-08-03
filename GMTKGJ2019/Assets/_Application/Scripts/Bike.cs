@@ -18,6 +18,8 @@ namespace GMTKGJ2019
 
         public event Action Destroyed;
 
+        public event Action<GameObject> ItemCollected;
+
         private Rigidbody2D rigidBody;
         private PlayerWall previousWall;
         private PlayerWall currentWall;
@@ -96,7 +98,8 @@ namespace GMTKGJ2019
             speedTimer?.Complete();
             speedTimer = DOTween.Sequence().InsertCallback(
                 timeout,
-                () => {
+                () =>
+                {
                     currentSpeed = baseSpeed;
                     rigidBody.velocity = currentSpeed * currentDirection.ToVector2();
                 });
@@ -118,13 +121,16 @@ namespace GMTKGJ2019
         {
             switch (collision.GetComponent<ColliderTypeHolder>().Type)
             {
-            case ColliderType.Wall:
-                if (collision.gameObject != currentWall.gameObject
-                    && collision.gameObject != previousWall.gameObject)
-                {
-                    DestroyPlayer();
-                }
-                break;
+                case ColliderType.Wall:
+                    if (collision.gameObject != currentWall.gameObject
+                        && collision.gameObject != previousWall.gameObject)
+                    {
+                        DestroyPlayer();
+                    }
+                    break;
+                case ColliderType.Item:
+                    ItemCollected?.Invoke(collision.gameObject);
+                    break;
             }
         }
 

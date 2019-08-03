@@ -334,6 +334,8 @@ MonoBehaviour:
   - {fileID: 822672011708339951, guid: cace8430c4011ca4cb0ecd1f0612e12a, type: 3}
   - {fileID: 822672011708339951, guid: e707d66d251c044419b658c1cfe02bbf, type: 3}
   - {fileID: 822672011708339951, guid: 3e5d8d1a144a14e439738ffbc5f8c9a2, type: 3}
+  genericItemPrefab: {fileID: 2826471825808641594, guid: 25303d6479a094d4dbdb1b8c489e8af8,
+    type: 3}
   countdownText: {fileID: 1530359319}
   CountdownSound: {fileID: 8300000, guid: 9c988bde7e94e272bab7c68d1586727f, type: 3}
   StartGameSound: {fileID: 8300000, guid: cc02b902fdcfe89f4ad4e3046f9cb068, type: 3}

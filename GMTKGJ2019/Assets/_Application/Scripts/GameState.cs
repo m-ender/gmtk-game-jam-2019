@@ -14,6 +14,8 @@ namespace GMTKGJ2019
         [SerializeField] private Transform arena = null;
         [SerializeField] private SteeringWheel[] steeringWheels = null;
         [SerializeField] private GameObject[] playerObjects = null;
+
+        [SerializeField] private GameObject genericItemPrefab = null;
         [SerializeField] private TextMeshProUGUI countdownText = null;
 
         [Space(10)]
@@ -71,7 +73,10 @@ namespace GMTKGJ2019
 
                 int player = i;
                 bike.Destroyed += () => OnBikeDestroyed(player);
+                bike.ItemCollected += (item) => OnBikeItemCollected(player, item);
             }
+
+            Instantiate(genericItemPrefab, arena);
 
             countdown = 3;
             countdownText.gameObject.SetActive(true);
@@ -96,6 +101,12 @@ namespace GMTKGJ2019
                 foreach (var bike in bikes)
                     bike.StartBike();
             }
+        }
+
+        private void OnBikeItemCollected(int player, GameObject item)
+        {
+            item.GetComponent<Item>().CastEffect(player, steeringWheels);
+            Destroy(item);
         }
 
         private void OnBikeDestroyed(int player)
