@@ -15,7 +15,7 @@ namespace GMTKGJ2019
         [SerializeField] private SteeringWheel[] steeringWheels = null;
         [SerializeField] private GameObject[] playerObjects = null;
 
-        [SerializeField] private GameObject genericItemPrefab = null;
+        [SerializeField] private GameObject[] itemPrefabs = null;
         [SerializeField] private TextMeshProUGUI countdownText = null;
 
         [Space(10)]
@@ -29,10 +29,12 @@ namespace GMTKGJ2019
         private int countdown;
 
         private int playerCount;
-        private List<Bike> bikes;
         private int[] scores;
         private int nextScore;
         private List<KeyCode> playerKeys;
+
+        private List<Bike> bikes;
+        private List<GameObject> items;
 
         private HashSet<int> remainingPlayers;
 
@@ -60,6 +62,7 @@ namespace GMTKGJ2019
         {
             remainingPlayers = new HashSet<int>();
             bikes = new List<Bike>();
+            items = new List<GameObject>();
             nextScore = 0;
 
             for (int i = 0; i < playerCount; ++i)
@@ -76,7 +79,7 @@ namespace GMTKGJ2019
                 bike.ItemCollected += (item) => OnBikeItemCollected(player, item);
             }
 
-            Instantiate(genericItemPrefab, arena);
+            items.Add(Instantiate(itemPrefabs[Random.RNG.Next(itemPrefabs.Length)], arena));
 
             countdown = 3;
             countdownText.gameObject.SetActive(true);
@@ -107,6 +110,7 @@ namespace GMTKGJ2019
         {
             item.GetComponent<Item>().CastEffect(player, steeringWheels);
             Destroy(item);
+            items.Remove(item);
         }
 
         private void OnBikeDestroyed(int player)
@@ -118,12 +122,18 @@ namespace GMTKGJ2019
             scores[player] += nextScore;
 
             if (remainingPlayers.Count == 0)
-            {
-                for (int i = 0; i < playerCount; ++i)
-                    steeringWheels[i].SetScore(scores[i]);
+                FinishMatch();
+        }
 
-                StartMatch();
-            }
+        private void FinishMatch()
+        {
+            for (int i = 0; i < playerCount; ++i)
+                steeringWheels[i].SetScore(scores[i]);
+
+            foreach (var item in items)
+                Destroy(item);
+
+            StartMatch();
         }
 
         private void Update()

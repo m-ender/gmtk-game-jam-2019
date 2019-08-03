@@ -138,6 +138,7 @@ namespace GMTKGJ2019
         {
             if (destroyed) return;
 
+            speedTimer?.Complete();
             Destroy(transform.parent.gameObject);
             Destroyed?.Invoke();
             destroyed = true;
