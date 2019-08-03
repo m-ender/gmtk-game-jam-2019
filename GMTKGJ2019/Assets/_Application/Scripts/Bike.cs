@@ -23,7 +23,6 @@ namespace GMTKGJ2019
         private void Awake()
         {
             rigidBody = GetComponent<Rigidbody2D>();
-            rigidBody.velocity = new Vector2(0, 5);
 
             currentSpeed = baseSpeed;
             Turn(initialDirection);
