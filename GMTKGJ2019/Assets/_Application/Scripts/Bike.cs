@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace GMTKGJ2019
 {
@@ -12,6 +13,8 @@ namespace GMTKGJ2019
         [SerializeField] private Color playerColor = Color.white;
         [SerializeField] private PlayerWall wallPrefab = null;
         [SerializeField] private Direction initialDirection = Direction.None;
+
+        public event Action Destroyed;
 
         private Rigidbody2D rigidBody;
         private PlayerWall previousWall;
@@ -81,6 +84,7 @@ namespace GMTKGJ2019
         private void DestroyPlayer()
         {
             Destroy(transform.parent.gameObject);
+            Destroyed?.Invoke();
         }
     }
 }

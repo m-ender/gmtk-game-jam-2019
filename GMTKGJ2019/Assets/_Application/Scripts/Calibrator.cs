@@ -23,7 +23,7 @@ namespace GMTKGJ2019
 
         public delegate void KeysSelected(List<KeyCode> keys);
 
-        public event KeysSelected OnPlayersKeysSelected;
+        public event KeysSelected PlayerKeysSelected;
 
         private void Update()
         {
@@ -68,7 +68,7 @@ namespace GMTKGJ2019
             else
             {
                 timeLeft.SetProgress(0f);
-                OnPlayersKeysSelected(new List<KeyCode>(keys));
+                PlayerKeysSelected(new List<KeyCode>(keys));
             }
         }
     }

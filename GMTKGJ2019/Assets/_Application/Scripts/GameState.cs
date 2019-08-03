@@ -20,19 +20,37 @@ namespace GMTKGJ2019
         [SerializeField]
         private GameObject[] playerObjects = null;
 
+        private HashSet<int> remainingPlayers;
+
         private void Start()
         {
-            calibrator.OnPlayersKeysSelected += StartGame;
+            calibrator.PlayerKeysSelected += StartGame;
         }
 
         private void StartGame(List<KeyCode> playersKeys)
         {
             Destroy(calibrator.gameObject);
 
-            for (int i = 0; i < playersKeys.Count; i++)
+            remainingPlayers = new HashSet<int>();
+
+            for (int i = 0; i < playersKeys.Count; ++i)
             {
+                remainingPlayers.Add(i);
+
                 Instantiate(steeringWheels[i], canvas.transform);
-                Instantiate(playerObjects[i]);
+                var bike = Instantiate(playerObjects[i]).GetComponentInChildren<Bike>();
+                int player = i;
+                bike.Destroyed += () => OnBikeDestroyed(player);
+            }
+        }
+
+        private void OnBikeDestroyed(int player)
+        {
+            remainingPlayers.Remove(player);
+
+            if (remainingPlayers.Count < 2)
+            {
+                Debug.Log("congration you done it");
             }
         }
     }
