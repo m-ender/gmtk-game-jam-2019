@@ -6,6 +6,7 @@ using Random = System.Random;
 
 namespace GMTKGJ2019
 {
+    [RequireComponent(typeof(CanvasGroup))]
     public class SteeringWheel : MonoBehaviour
     {
         [SerializeField] private RectTransform hand = null;
@@ -26,6 +27,10 @@ namespace GMTKGJ2019
         [SerializeField] private float freezeDuration = 0f;
         [SerializeField] private float disabledSectorDuration = 0f;
 
+        private CanvasGroup canvasGroup;
+
+        private bool suspended;
+
         private float angle;
         private float currentSpeed;
         private bool reverse;
@@ -37,19 +42,36 @@ namespace GMTKGJ2019
 
         private Dictionary<Direction, Image> sectorMap;
 
+        public void Suspend()
+        {
+            speedTimer.Complete(true);
+            disabledSectorTimer.Complete(true);
+
+            canvasGroup.alpha = 0.2f;
+            currentSpeed = 0f;
+
+            suspended = true;
+        }
+
         public void Reverse()
         {
+            if (suspended) return;
+
             reverse = !reverse;
         }
 
         public void Fast()
         {
+            if (suspended) return;
+
             currentSpeed = fastModifier * baseRotationSpeed;
             SetUpSpeedTimer(speedChangeDuration);
         }
 
         public void Slow()
         {
+            if (suspended) return;
+
             speedTimer?.Complete();
             currentSpeed = slowModifier * baseRotationSpeed;
             SetUpSpeedTimer(speedChangeDuration);
@@ -57,6 +79,8 @@ namespace GMTKGJ2019
 
         public void Freeze()
         {
+            if (suspended) return;
+
             speedTimer?.Complete();
             currentSpeed = 0f;
             SetUpSpeedTimer(freezeDuration);
@@ -64,6 +88,8 @@ namespace GMTKGJ2019
 
         public void DisableSector(Direction dir)
         {
+            if (suspended) return;
+
             disabledSector = dir;
             SetUpDisabledSectorTimer(disabledSectorDuration);
         }
@@ -75,6 +101,8 @@ namespace GMTKGJ2019
 
         private void Awake()
         {
+            canvasGroup = GetComponent<CanvasGroup>();
+
             angle = 0;
             currentSpeed = baseRotationSpeed;
             reverse = false;
@@ -121,9 +149,7 @@ namespace GMTKGJ2019
         private void SetUpDisabledSectorTimer(float timeout)
         {
             disabledSectorTimer?.Complete();
-            disabledSectorTimer = DOTween.Sequence().InsertCallback(
-                timeout,
-                () => disabledSector = Direction.None);
+            disabledSectorTimer = DOTween.Sequence().InsertCallback(timeout, EnableSectors);
         }
 
         private void RenderSectors()

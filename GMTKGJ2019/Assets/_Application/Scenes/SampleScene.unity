@@ -320,7 +320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   calibrator: {fileID: 105684196}
   canvas: {fileID: 1046641252}
-  steeringWheels:
+  steeringWheelPrefabs:
   - {fileID: 5275327797005168316, guid: b2d4f66ae26f3e848a112eaa82441c92, type: 3}
   - {fileID: 5275327797005168316, guid: 40041712857a52846b0174ad5c3c9b7d, type: 3}
   - {fileID: 5275327797005168316, guid: e6494a9a3dacbdc41b0106c1a7fb9125, type: 3}

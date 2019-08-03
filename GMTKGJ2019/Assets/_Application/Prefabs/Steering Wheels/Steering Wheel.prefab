@@ -385,6 +385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3402539311539688243}
   - component: {fileID: 3402539311539688252}
+  - component: {fileID: 8908119538026296797}
   m_Layer: 5
   m_Name: Steering Wheel
   m_TagString: Untagged
@@ -442,3 +443,15 @@ MonoBehaviour:
   speedChangeDuration: 3
   freezeDuration: 1
   disabledSectorDuration: 3
+--- !u!225 &8908119538026296797
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3402539311539688242}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
