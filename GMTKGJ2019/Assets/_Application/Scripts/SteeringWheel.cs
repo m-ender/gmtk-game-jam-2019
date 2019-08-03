@@ -1,12 +1,12 @@
 ﻿using DG.Tweening;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
 
 namespace GMTKGJ2019
 {
-    [RequireComponent(typeof(CanvasGroup))]
     public class SteeringWheel : MonoBehaviour
     {
         [SerializeField] private RectTransform hand = null;
@@ -14,6 +14,8 @@ namespace GMTKGJ2019
         [SerializeField] private Image eastSector = null;
         [SerializeField] private Image southSector = null;
         [SerializeField] private Image westSector = null;
+        [SerializeField] private CanvasGroup wheelUI = null;
+        [SerializeField] private TextMeshProUGUI keyIndicator = null;
 
         [Space(10)]
 
@@ -31,7 +33,6 @@ namespace GMTKGJ2019
         [SerializeField] private float freezeDuration = 0f;
         [SerializeField] private float disabledSectorDuration = 0f;
 
-        private CanvasGroup canvasGroup;
 
         private bool suspended;
 
@@ -46,6 +47,11 @@ namespace GMTKGJ2019
 
         private Dictionary<Direction, Image> sectorMap;
 
+        public void SetKeyIndicator(string key)
+        {
+            keyIndicator.text = key;
+        }
+
         public void Reset()
         {
             angle = initialDirection.ToAngle();
@@ -53,13 +59,15 @@ namespace GMTKGJ2019
             reverse = false;
             disabledSector = Direction.None;
 
+            CurrentDirection = AngleToDirection(angle);
+
             Resume();
             RenderSectors();
         }
 
         public void Resume()
         {
-            canvasGroup.alpha = 1f;
+            wheelUI.alpha = 1f;
 
             suspended = false;
         }
@@ -69,7 +77,7 @@ namespace GMTKGJ2019
             speedTimer?.Complete(true);
             disabledSectorTimer?.Complete(true);
 
-            canvasGroup.alpha = 0.2f;
+            wheelUI.alpha = 0.2f;
 
             suspended = true;
         }
@@ -122,8 +130,6 @@ namespace GMTKGJ2019
 
         private void Awake()
         {
-            canvasGroup = GetComponent<CanvasGroup>();
-
             sectorMap = new Dictionary<Direction, Image>
             {
                 { Direction.North, northSector },
@@ -133,6 +139,7 @@ namespace GMTKGJ2019
             };
 
             Reset();
+            Suspend();
         }
 
         private void Update()

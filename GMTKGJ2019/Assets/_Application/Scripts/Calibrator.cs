@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -12,7 +11,7 @@ namespace GMTKGJ2019
 
         private static readonly double TotalCalibrationTime = TimeSpan.FromSeconds(2).TotalSeconds;
 
-        [SerializeField] private TextMeshProUGUI playersText = null;
+        [SerializeField] private SteeringWheel[] steeringWheels = null;
 
         [SerializeField] private ProgressBar timeLeft = null;
 
@@ -26,7 +25,6 @@ namespace GMTKGJ2019
         private void UpdateUI()
         {
             timeLeft.SetProgress((float)((100f / TotalCalibrationTime) * calibrationTimeLeft));
-            playersText.text = String.Join(" ", keys);
         }
 
         private void Update()
@@ -61,6 +59,15 @@ namespace GMTKGJ2019
                         keys.Remove(key);
                     }
                 }
+
+                for (int i = 0; i < keys.Count; ++i)
+                {
+                    steeringWheels[i].gameObject.SetActive(true);
+                    steeringWheels[i].SetKeyIndicator(keys[i].ToString());
+                }
+
+                for (int i = keys.Count; i < MaximumPlayers; ++i)
+                    steeringWheels[i].gameObject.SetActive(false);
 
                 if (keys.Count == 0)
                 {
