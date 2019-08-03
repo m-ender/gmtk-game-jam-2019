@@ -23,11 +23,17 @@ namespace GMTKGJ2019
         private Direction currentDirection;
         private float currentSpeed;
 
+        public void StartBike()
+        {
+            currentSpeed = baseSpeed;
+            Turn(initialDirection);
+        }
+
         private void Awake()
         {
             rigidBody = GetComponent<Rigidbody2D>();
 
-            currentSpeed = baseSpeed;
+            currentSpeed = 0f;
             Turn(initialDirection);
 
             previousWall = currentWall;
@@ -60,7 +66,7 @@ namespace GMTKGJ2019
             currentDirection = dir;
 
             rigidBody.MoveRotation(dir.ToAngle());
-            rigidBody.velocity = baseSpeed * dir.ToVector2();
+            rigidBody.velocity = currentSpeed * dir.ToVector2();
 
             previousWall = currentWall;
             currentWall = Instantiate(wallPrefab, transform.parent);
