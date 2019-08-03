@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace GMTKGJ2019
 {
+    [RequireComponent(typeof(AudioSource))]
     public class GameState : MonoBehaviour
     {
 
@@ -15,6 +16,11 @@ namespace GMTKGJ2019
         [SerializeField] private GameObject[] playerObjects = null;
         [SerializeField] private TextMeshProUGUI countdownText = null;
 
+        [SerializeField] private AudioClip CountdownSound = null;
+        [SerializeField] private AudioClip StartGameSound = null;
+
+        private AudioSource audioSource;
+
         private int countdown;
 
         private int playerCount;
@@ -23,6 +29,11 @@ namespace GMTKGJ2019
         private int nextScore;
 
         private HashSet<int> remainingPlayers;
+
+        private void Awake()
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
 
         private void Start()
         {
@@ -40,10 +51,6 @@ namespace GMTKGJ2019
 
         private void StartMatch()
         {
-            countdown = 3;
-            countdownText.gameObject.SetActive(true);
-            countdownText.text = countdown.ToString();
-
             remainingPlayers = new HashSet<int>();
             bikes = new List<Bike>();
             nextScore = 0;
@@ -60,20 +67,29 @@ namespace GMTKGJ2019
                 bike.Destroyed += () => OnBikeDestroyed(player);
             }
 
-            DOTween.Sequence().InsertCallback(1f, () =>
+            countdown = 3;
+            countdownText.gameObject.SetActive(true);
+            countdownText.text = countdown.ToString();
+
+            audioSource.PlayOneShot(CountdownSound, 1f);
+            DOTween.Sequence().InsertCallback(1f, AdvanceCountdown).SetLoops(3);
+        }
+
+        private void AdvanceCountdown()
+        {
+            --countdown;
+            if (countdown > 0)
             {
-                --countdown;
-                if (countdown > 0)
-                {
-                    countdownText.text = countdown.ToString();
-                }
-                else
-                {
-                    Destroy(countdownText.gameObject);
-                    foreach (var bike in bikes)
-                        bike.StartBike();
-                }
-            }).SetLoops(3);
+                audioSource.PlayOneShot(CountdownSound, 1f);
+                countdownText.text = countdown.ToString();
+            }
+            else
+            {
+                audioSource.PlayOneShot(StartGameSound, 1f);
+                countdownText.gameObject.SetActive(false);
+                foreach (var bike in bikes)
+                    bike.StartBike();
+            }
         }
 
         private void OnBikeDestroyed(int player)
@@ -83,20 +99,29 @@ namespace GMTKGJ2019
             steeringWheels[player].Suspend();
             scores[player] += nextScore;
 
-            if (remainingPlayers.Count < 2)
+            if (remainingPlayers.Count == 0)
             {
-                if (remainingPlayers.Count == 1)
-                    scores[remainingPlayers.ToArray()[0]] += playerCount - 1;
-
                 for (int i = 0; i < playerCount; ++i)
                     steeringWheels[i].SetScore(scores[i]);
+
+                StartMatch();
             }
         }
 
         private void Update()
         {
-            if (remainingPlayers != null)
+            if (remainingPlayers == null)
+                return;
+
+            if (remainingPlayers.Count > 1)
                 nextScore = playerCount - remainingPlayers.Count;
+            else if (remainingPlayers.Count == 1)
+            {
+                int winner = remainingPlayers.ToArray()[0];
+                nextScore = playerCount - 1;
+                bikes[winner].DestroyPlayer();
+            }
+
         }
     }
 

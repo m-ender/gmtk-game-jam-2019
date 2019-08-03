@@ -23,6 +23,8 @@ namespace GMTKGJ2019
         private Direction currentDirection;
         private float currentSpeed;
 
+        private bool destroyed = false;
+
         public void StartBike()
         {
             currentSpeed = baseSpeed;
@@ -87,10 +89,13 @@ namespace GMTKGJ2019
             }
         }
 
-        private void DestroyPlayer()
+        public void DestroyPlayer()
         {
+            if (destroyed) return;
+
             Destroy(transform.parent.gameObject);
             Destroyed?.Invoke();
+            destroyed = true;
         }
     }
 }
