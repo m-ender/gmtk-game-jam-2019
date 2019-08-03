@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   calibrator: {fileID: 105684196}
-  canvas: {fileID: 1046641252}
+  arena: {fileID: 457708171}
   steeringWheels:
   - {fileID: 1241651168}
   - {fileID: 1423978592}

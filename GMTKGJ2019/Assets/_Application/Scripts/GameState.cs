@@ -11,7 +11,7 @@ namespace GMTKGJ2019
     {
 
         [SerializeField] private Calibrator calibrator = null;
-        [SerializeField] private Canvas canvas = null;
+        [SerializeField] private Transform arena = null;
         [SerializeField] private SteeringWheel[] steeringWheels = null;
         [SerializeField] private GameObject[] playerObjects = null;
         [SerializeField] private TextMeshProUGUI countdownText = null;
@@ -27,6 +27,7 @@ namespace GMTKGJ2019
         private List<Bike> bikes;
         private int[] scores;
         private int nextScore;
+        private List<KeyCode> playerKeys;
 
         private HashSet<int> remainingPlayers;
 
@@ -40,9 +41,10 @@ namespace GMTKGJ2019
             calibrator.PlayerKeysSelected += StartGame;
         }
 
-        private void StartGame(List<KeyCode> playersKeys)
+        private void StartGame(List<KeyCode> playerKeys)
         {
-            playerCount = playersKeys.Count;
+            this.playerKeys = playerKeys;
+            playerCount = playerKeys.Count;
             Destroy(calibrator.gameObject);
 
             scores = new int[playerCount];
@@ -60,7 +62,8 @@ namespace GMTKGJ2019
                 remainingPlayers.Add(i);
 
                 steeringWheels[i].Resume();
-                var bike = Instantiate(playerObjects[i]).GetComponentInChildren<Bike>();
+                var bike = Instantiate(playerObjects[i], arena).GetComponentInChildren<Bike>();
+                bike.Initialize(playerKeys[i], steeringWheels[i]);
                 bikes.Add(bike);
 
                 int player = i;
@@ -119,10 +122,8 @@ namespace GMTKGJ2019
             {
                 int winner = remainingPlayers.ToArray()[0];
                 nextScore = playerCount - 1;
-                bikes[winner].DestroyPlayer();
+                // bikes[winner].DestroyPlayer();
             }
-
         }
     }
-
 }

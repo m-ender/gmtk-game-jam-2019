@@ -23,10 +23,21 @@ namespace GMTKGJ2019
         private Direction currentDirection;
         private float currentSpeed;
 
+        private KeyCode key;
+        private SteeringWheel steeringWheel;
+
+        private bool started = false;
         private bool destroyed = false;
+
+        public void Initialize(KeyCode key, SteeringWheel steeringWheel)
+        {
+            this.key = key;
+            this.steeringWheel = steeringWheel;
+        }
 
         public void StartBike()
         {
+            started = true;
             currentSpeed = baseSpeed;
             Turn(initialDirection);
         }
@@ -43,23 +54,16 @@ namespace GMTKGJ2019
 
         private void Update()
         {
+            if (!started)
+                return;
+
             currentWall.UpdateEnd(transform.localPosition);
 
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(key))
             {
-                Turn(Direction.East);
-            }
-            else if (Input.GetKeyDown(KeyCode.W))
-            {
-                Turn(Direction.North);
-            }
-            else if (Input.GetKeyDown(KeyCode.S))
-            {
-                Turn(Direction.South);
-            }
-            else if (Input.GetKeyDown(KeyCode.A))
-            {
-                Turn(Direction.West);
+                Direction dir = steeringWheel.CurrentDirection;
+                if (dir != Direction.None)
+                    Turn(dir);
             }
         }
 
