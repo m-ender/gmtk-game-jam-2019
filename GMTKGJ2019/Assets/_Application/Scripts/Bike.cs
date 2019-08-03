@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace GMTKGJ2019
 {
@@ -10,6 +9,7 @@ namespace GMTKGJ2019
         [SerializeField] private float fastModifier;
         [SerializeField] private float slowModifier;
 
+        [SerializeField] private Color playerColor;
         [SerializeField] private PlayerWall wallPrefab;
         [SerializeField] private Direction initialDirection;
 
@@ -62,7 +62,7 @@ namespace GMTKGJ2019
 
             previousWall = currentWall;
             currentWall = Instantiate(wallPrefab, transform.parent);
-            currentWall.Initialize(currentDirection.IsHorizontal(), transform.localPosition);
+            currentWall.Initialize(currentDirection.IsHorizontal(), transform.localPosition, playerColor);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

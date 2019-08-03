@@ -2,6 +2,7 @@
 
 namespace GMTKGJ2019
 {
+    [RequireComponent(typeof(SpriteRenderer))]
     public class PlayerWall : MonoBehaviour
     {
         [SerializeField] private float width = 0f;
@@ -9,12 +10,14 @@ namespace GMTKGJ2019
         private Vector2 start;
         private bool horizontal;
 
-        public void Initialize(bool horizontal, Vector2 start)
+        public void Initialize(bool horizontal, Vector2 start, Color playerColor)
         {
             this.start = start;
             this.horizontal = horizontal;
 
             transform.localScale = Vector3.zero;
+
+            GetComponent<SpriteRenderer>().color = playerColor;
         }
 
         public void UpdateEnd(Vector2 end)
