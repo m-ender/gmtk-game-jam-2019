@@ -13,7 +13,7 @@ namespace GMTKGJ2019
 
         [SerializeField] private ProgressBar timeLeft = null;
 
-        private bool hasCalibrationStarted = false;
+        private bool isCalibrationRunning = false;
         private double calibrationTimeLeft = TotalCalibrationTime;
 
         private readonly List<KeyCode> keys = new List<KeyCode>();
@@ -27,10 +27,10 @@ namespace GMTKGJ2019
         {
             if (Input.anyKeyDown)
             {
-                hasCalibrationStarted = true;
+                isCalibrationRunning = true;
             }
 
-            if (!hasCalibrationStarted)
+            if (!isCalibrationRunning)
             {
                 return;
             }
@@ -52,8 +52,12 @@ namespace GMTKGJ2019
                     }
                 }
 
+                if (keys.Count == 0)
+                {
+                    isCalibrationRunning = false;
+                }
+
                 timeLeft.SetProgress((float)((100f / TotalCalibrationTime) * calibrationTimeLeft));
-                //timeLeftText.text = TimeSpan.FromSeconds(calibrationTimeLeft).ToString();
                 playersText.text = String.Join(" ", keys);
             }
             else
