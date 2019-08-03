@@ -337,6 +337,7 @@ MonoBehaviour:
   countdownText: {fileID: 1530359319}
   CountdownSound: {fileID: 8300000, guid: 9c988bde7e94e272bab7c68d1586727f, type: 3}
   StartGameSound: {fileID: 8300000, guid: cc02b902fdcfe89f4ad4e3046f9cb068, type: 3}
+  ExplosionSound: {fileID: 8300000, guid: 7aa836739a9cc26169b0364e017c5ac9, type: 3}
 --- !u!4 &164595060
 Transform:
   m_ObjectHideFlags: 0

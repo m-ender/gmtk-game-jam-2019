@@ -16,8 +16,11 @@ namespace GMTKGJ2019
         [SerializeField] private GameObject[] playerObjects = null;
         [SerializeField] private TextMeshProUGUI countdownText = null;
 
+        [Space(10)]
+
         [SerializeField] private AudioClip CountdownSound = null;
         [SerializeField] private AudioClip StartGameSound = null;
+        [SerializeField] private AudioClip ExplosionSound = null;
 
         private AudioSource audioSource;
 
@@ -71,7 +74,7 @@ namespace GMTKGJ2019
             countdownText.gameObject.SetActive(true);
             countdownText.text = countdown.ToString();
 
-            audioSource.PlayOneShot(CountdownSound, 1f);
+            audioSource.PlayOneShot(CountdownSound);
             DOTween.Sequence().InsertCallback(1f, AdvanceCountdown).SetLoops(3);
         }
 
@@ -80,12 +83,12 @@ namespace GMTKGJ2019
             --countdown;
             if (countdown > 0)
             {
-                audioSource.PlayOneShot(CountdownSound, 1f);
+                audioSource.PlayOneShot(CountdownSound);
                 countdownText.text = countdown.ToString();
             }
             else
             {
-                audioSource.PlayOneShot(StartGameSound, 1f);
+                audioSource.PlayOneShot(StartGameSound);
                 countdownText.gameObject.SetActive(false);
                 foreach (var bike in bikes)
                     bike.StartBike();
@@ -94,6 +97,7 @@ namespace GMTKGJ2019
 
         private void OnBikeDestroyed(int player)
         {
+            audioSource.PlayOneShot(ExplosionSound);
             remainingPlayers.Remove(player);
 
             steeringWheels[player].Suspend();
