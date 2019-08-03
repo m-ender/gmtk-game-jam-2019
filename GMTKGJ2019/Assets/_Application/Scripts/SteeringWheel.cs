@@ -16,6 +16,7 @@ namespace GMTKGJ2019
         [SerializeField] private Image westSector = null;
         [SerializeField] private CanvasGroup wheelUI = null;
         [SerializeField] private TextMeshProUGUI keyIndicator = null;
+        [SerializeField] private TextMeshProUGUI scoreIndicator = null;
 
         [Space(10)]
 
@@ -33,7 +34,6 @@ namespace GMTKGJ2019
         [SerializeField] private float freezeDuration = 0f;
         [SerializeField] private float disabledSectorDuration = 0f;
 
-
         private bool suspended;
 
         private float angle;
@@ -50,6 +50,11 @@ namespace GMTKGJ2019
         public void SetKeyIndicator(string key)
         {
             keyIndicator.text = key;
+        }
+
+        public void SetScore(int score)
+        {
+            scoreIndicator.text = score.ToString();
         }
 
         public void Reset()

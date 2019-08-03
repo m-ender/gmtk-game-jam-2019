@@ -1,7 +1,6 @@
 ﻿using DG.Tweening;
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -18,7 +17,10 @@ namespace GMTKGJ2019
 
         private int countdown;
 
+        private int playerCount;
         private List<Bike> bikes;
+        private int[] scores;
+        private int nextScore;
 
         private HashSet<int> remainingPlayers;
 
@@ -29,6 +31,8 @@ namespace GMTKGJ2019
 
         private void StartGame(List<KeyCode> playersKeys)
         {
+            playerCount = playersKeys.Count;
+
             Destroy(calibrator.gameObject);
 
             countdown = 3;
@@ -37,8 +41,10 @@ namespace GMTKGJ2019
 
             remainingPlayers = new HashSet<int>();
             bikes = new List<Bike>();
+            scores = new int[playerCount];
+            nextScore = 0;
 
-            for (int i = 0; i < playersKeys.Count; ++i)
+            for (int i = 0; i < playerCount; ++i)
             {
                 remainingPlayers.Add(i);
 
@@ -71,11 +77,22 @@ namespace GMTKGJ2019
             remainingPlayers.Remove(player);
 
             steeringWheels[player].Suspend();
+            scores[player] += nextScore;
 
             if (remainingPlayers.Count < 2)
             {
-                Debug.Log("congration you done it");
+                if (remainingPlayers.Count == 1)
+                    scores[remainingPlayers.ToArray()[0]] += playerCount - 1;
+
+                for (int i = 0; i < playerCount; ++i)
+                    steeringWheels[i].SetScore(scores[i]);
             }
+        }
+
+        private void Update()
+        {
+            if (remainingPlayers != null)
+                nextScore = playerCount - remainingPlayers.Count;
         }
     }
 
