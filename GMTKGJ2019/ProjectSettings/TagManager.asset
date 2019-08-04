@@ -56,3 +56,6 @@ TagManager:
   - name: Steering Wheel
     uniqueID: 2284538077
     locked: 0
+  - name: Overlay
+    uniqueID: 3490272305
+    locked: 0

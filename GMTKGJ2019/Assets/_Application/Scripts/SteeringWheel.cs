@@ -35,6 +35,13 @@ namespace GMTKGJ2019
 
         private Dictionary<Direction, SpriteRenderer> sectorMap;
 
+        private bool suspended;
+
+        public void Suspend()
+        {
+            suspended = true;
+        }
+
         public void Reverse()
         {
             reverse = !reverse;
@@ -101,6 +108,8 @@ namespace GMTKGJ2019
 
         private void Update()
         {
+            if (suspended) return;
+
             angle += Time.deltaTime * currentSpeed * (reverse ? 1 : -1);
             CurrentDirection = AngleToDirection(angle);
 

@@ -14,7 +14,8 @@ namespace GMTKGJ2019
         [SerializeField] private CameraShake cameraShake = null;
         [SerializeField] private Calibrator calibrator = null;
         [SerializeField] private Transform arena = null;
-        [SerializeField] private GameObject[] playerObjects = null;
+        [SerializeField] private GameObject arenaVeil = null;
+        [SerializeField] private GameObject[] playerObjectPrefabs = null;
         [SerializeField] private PlayerUI[] playerUIs = null;
         [SerializeField] private ResultScreen resultScreen = null;
 
@@ -43,6 +44,7 @@ namespace GMTKGJ2019
         private List<KeyCode> playerKeys;
 
         private List<Player> players;
+        private List<GameObject> playerObjects;
         private List<GameObject> items;
 
         private HashSet<int> remainingPlayers;
@@ -86,6 +88,7 @@ namespace GMTKGJ2019
         {
             remainingPlayers = new HashSet<int>();
             players = new List<Player>();
+            playerObjects = new List<GameObject>();
             items = new List<GameObject>();
             nextScore = 0;
             winner = -1;
@@ -106,11 +109,13 @@ namespace GMTKGJ2019
             {
                 remainingPlayers.Add(i);
 
-                var player = Instantiate(
-                    playerObjects[i],
+                GameObject playerObject = Instantiate(
+                    playerObjectPrefabs[i],
                     spawningLocations[i],
                     Quaternion.identity,
-                    arena).GetComponentInChildren<Player>();
+                    arena);
+                playerObjects.Add(playerObject);
+                var player = playerObject.GetComponentInChildren<Player>();
                 player.Initialize(playerKeys[i]);
                 players.Add(player);
 
@@ -206,9 +211,6 @@ namespace GMTKGJ2019
             for (int i = 0; i < playerCount; ++i)
                 playerUIs[i].SetScore(scores[i]);
 
-            foreach (var item in items)
-                Destroy(item);
-
             DisplayResults();
         }
 
@@ -219,10 +221,16 @@ namespace GMTKGJ2019
                 resultScreen.DisplayWinner(delay, playerNames[winner], winnerColor);
             else
                 resultScreen.DisplayDraw(delay);
+            arenaVeil.SetActive(true);
 
             DOTween.Sequence().InsertCallback(delay, () =>
             {
                 resultScreen.Hide();
+                arenaVeil.SetActive(false);
+                foreach (var obj in playerObjects)
+                    Destroy(obj);
+                foreach (var item in items)
+                    Destroy(item);
                 StartMatch();
             });
         }
@@ -253,8 +261,10 @@ namespace GMTKGJ2019
             {
                 winner = remainingPlayers.ToArray()[0];
                 winnerColor = players[winner].playerColor;
-                nextScore = playerCount - 1;
-                players[winner].DestroyPlayer();
+                scores[winner] += playerCount - 1;
+                players[winner].SteeringWheel.Suspend();
+                players[winner].StopBike();
+                FinishMatch();
             }
         }
     }
