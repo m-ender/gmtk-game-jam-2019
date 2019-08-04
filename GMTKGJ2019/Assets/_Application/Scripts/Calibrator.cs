@@ -28,7 +28,7 @@ namespace GMTKGJ2019
 
         private void Update()
         {
-            foreach (KeyCode key in Enum.GetValues(typeof(KeyCode)))
+            for (var key = KeyCode.A; key <= KeyCode.Z; ++key)
             {
                 if (Input.GetKey(key) && keys.Count < MaximumPlayers)
                 {
