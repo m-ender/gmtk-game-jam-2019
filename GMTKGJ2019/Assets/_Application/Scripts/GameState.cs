@@ -10,6 +10,8 @@ namespace GMTKGJ2019
     [RequireComponent(typeof(AudioSource))]
     public class GameState : MonoBehaviour
     {
+
+        [SerializeField] private CameraShake cameraShake = null;
         [SerializeField] private Calibrator calibrator = null;
         [SerializeField] private Transform arena = null;
         [SerializeField] private GameObject[] playerObjects = null;
@@ -166,6 +168,7 @@ namespace GMTKGJ2019
         private void OnPlayerDestroyed(int player)
         {
             audioSource.PlayOneShot(explosionSound);
+            cameraShake.TriggerShake();
             remainingPlayers.Remove(player);
 
             scores[player] += nextScore;
