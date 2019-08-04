@@ -88,8 +88,8 @@ namespace GMTKGJ2019
             nextScore = 0;
             winner = -1;
 
-            float width2 = parameters.ArenaWidth/2;
-            float height2 = parameters.ArenaHeight/2;
+            float width2 = parameters.ArenaWidth / 2;
+            float height2 = parameters.ArenaHeight / 2;
             float dist = parameters.SpawningDistanceFromWall;
 
             List<Vector2> spawningLocations = new List<Vector2>
@@ -131,7 +131,7 @@ namespace GMTKGJ2019
             audioSource.PlayOneShot(itemSpawnSound);
             items.Add(Instantiate(
                 itemPrefabs[rng.Next(itemPrefabs.Length)],
-                new Vector3((float)rng.NextDouble()*8f - 4f, (float)rng.NextDouble() * 8f - 4f, 0),
+                new Vector3((float)rng.NextDouble() * 8f - 4f, (float)rng.NextDouble() * 8f - 4f, 0),
                 Quaternion.identity,
                 arena));
         }
@@ -189,12 +189,14 @@ namespace GMTKGJ2019
 
         private void DisplayResults()
         {
+            int delay = parameters.NextMatchDelay;
             if (winner > -1)
-                resultScreen.DisplayWinner(playerNames[winner], winnerColor);
+                resultScreen.DisplayWinner(delay, playerNames[winner], winnerColor);
             else
-                resultScreen.DisplayDraw();
+                resultScreen.DisplayDraw(delay);
 
-            DOTween.Sequence().InsertCallback(parameters.NextMatchDelay, () => {
+            DOTween.Sequence().InsertCallback(delay, () =>
+            {
                 resultScreen.Hide();
                 StartMatch();
             });

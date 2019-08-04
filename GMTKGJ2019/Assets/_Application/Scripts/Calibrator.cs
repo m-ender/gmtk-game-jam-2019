@@ -9,8 +9,6 @@ namespace GMTKGJ2019
     {
         private static readonly int MaximumPlayers = 4;
 
-        //private static readonly double TotalCalibrationTime = TimeSpan.FromSeconds(2).TotalSeconds;
-
         [SerializeField] private PlayerUI[] playerUIs = null;
 
         [SerializeField] private ProgressBar timeLeft = null;
