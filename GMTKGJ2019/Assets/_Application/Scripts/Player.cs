@@ -9,7 +9,7 @@ namespace GMTKGJ2019
     {
         [SerializeField] private Transform bike = null;
         public SteeringWheel SteeringWheel = null;
-        [SerializeField] private Color playerColor = Color.white;
+        public Color playerColor = Color.white;
         [SerializeField] private PlayerWall wallPrefab = null;
         [SerializeField] private Direction initialDirection = Direction.None;
 

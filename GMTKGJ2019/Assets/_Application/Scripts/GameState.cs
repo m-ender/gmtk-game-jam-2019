@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -13,6 +14,7 @@ namespace GMTKGJ2019
         [SerializeField] private Transform arena = null;
         [SerializeField] private GameObject[] playerObjects = null;
         [SerializeField] private PlayerUI[] playerUIs = null;
+        [SerializeField] private ResultScreen resultScreen = null;
 
         [SerializeField] private GameObject[] itemPrefabs = null;
         [SerializeField] private TextMeshProUGUI countdownText = null;
@@ -45,6 +47,17 @@ namespace GMTKGJ2019
 
         private bool matchInProgress;
 
+        private int winner;
+        private Color winnerColor;
+
+        private string[] playerNames = new string[]
+        {
+            "Orange",
+            "Green",
+            "Pink",
+            "Blue",
+        };
+
         private void Awake()
         {
             parameters = GameParameters.Instance;
@@ -73,6 +86,7 @@ namespace GMTKGJ2019
             players = new List<Player>();
             items = new List<GameObject>();
             nextScore = 0;
+            winner = -1;
 
             float width2 = parameters.ArenaWidth/2;
             float height2 = parameters.ArenaHeight/2;
@@ -170,7 +184,20 @@ namespace GMTKGJ2019
             foreach (var item in items)
                 Destroy(item);
 
-            StartMatch();
+            DisplayResults();
+        }
+
+        private void DisplayResults()
+        {
+            if (winner > -1)
+                resultScreen.DisplayWinner(playerNames[winner], winnerColor);
+            else
+                resultScreen.DisplayDraw();
+
+            DOTween.Sequence().InsertCallback(3f, () => {
+                resultScreen.Hide();
+                StartMatch();
+            });
         }
 
         private void Update()
@@ -195,9 +222,10 @@ namespace GMTKGJ2019
             }
             else if (remainingPlayers.Count == 1)
             {
-                int winner = remainingPlayers.ToArray()[0];
+                winner = remainingPlayers.ToArray()[0];
+                winnerColor = players[winner].playerColor;
                 nextScore = playerCount - 1;
-                //players[winner].DestroyPlayer();
+                players[winner].DestroyPlayer();
             }
         }
     }
