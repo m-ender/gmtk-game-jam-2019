@@ -38,7 +38,6 @@ namespace GMTKGJ2019
         public int NextMatchDelay;
         public float CalibrationTime;
 
-
         public static GameParameters Instance { get; private set; }
 
         private void Awake()
