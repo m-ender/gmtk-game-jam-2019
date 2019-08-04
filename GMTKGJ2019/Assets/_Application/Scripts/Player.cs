@@ -73,6 +73,8 @@ namespace GMTKGJ2019
                 Direction dir = SteeringWheel.CurrentDirection;
                 if (dir != Direction.None)
                 {
+                    SteeringWheel.AnimateInput();
+
                     if (dir == currentDirection)
                         Accelerate();
                     else if (dir == currentDirection.Reverse())

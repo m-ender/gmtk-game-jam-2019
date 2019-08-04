@@ -1042,6 +1042,8 @@ MonoBehaviour:
   CameraShakeStrength: 0.3
   CameraShakeVibrato: 100
   CameraShakeRandomness: 90
+  InputBumpStrength: 0.15
+  InputBumpDuration: 0.05
 --- !u!4 &433994636
 Transform:
   m_ObjectHideFlags: 0

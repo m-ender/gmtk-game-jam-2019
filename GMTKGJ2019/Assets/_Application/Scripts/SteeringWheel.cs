@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -65,6 +66,17 @@ namespace GMTKGJ2019
             speedTimer?.Complete();
             currentSpeed = 0f;
             SetUpSpeedTimer(parameters.FreezeDuration);
+        }
+
+        public void AnimateInput()
+        {
+            GameParameters parameters = GameParameters.Instance;
+            sectorMap[CurrentDirection].transform
+                .DOLocalMove(
+                    parameters.InputBumpStrength * CurrentDirection.ToVector2(),
+                    parameters.InputBumpDuration)
+                .SetRelative(true)
+                .SetLoops(2, LoopType.Yoyo);
         }
 
         public void DisableSector(Direction dir)
