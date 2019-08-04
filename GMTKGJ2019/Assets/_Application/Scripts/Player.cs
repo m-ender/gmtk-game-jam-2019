@@ -96,7 +96,10 @@ namespace GMTKGJ2019
 
             UpdateWall();
             speedTimer?.Complete();
-            Destroy(gameObject);
+            SetSpeed(0f);
+            Destroy(bike.gameObject);
+            Destroy(this);
+            SteeringWheel.Explode();
             Destroyed?.Invoke();
             destroyed = true;
         }

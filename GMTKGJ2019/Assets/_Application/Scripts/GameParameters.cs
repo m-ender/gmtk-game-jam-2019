@@ -49,6 +49,9 @@ namespace GMTKGJ2019
         public float SectorFadeDuration;
         public float ItemEffectDuration;
         public float ItemEffectDistance;
+        public float WheelExplosionDuration;
+        public float WheelExplosionDistance;
+        public float WheelExplosionRotations;
 
         public static GameParameters Instance { get; private set; }
 

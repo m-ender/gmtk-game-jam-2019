@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -110,6 +111,17 @@ namespace GMTKGJ2019
                     parameters.InputBumpDuration)
                 .SetRelative(true)
                 .SetLoops(2, LoopType.Yoyo);
+        }
+
+        public void Explode()
+        {
+            var seq = DOTween.Sequence();
+            foreach (var (dir, sector) in sectorMap)
+            {
+                seq.Join(sector.transform.DOLocalMove(dir.ToVector2() * parameters.WheelExplosionDistance, parameters.WheelExplosionDuration));
+                seq.Join(sector.transform.DORotate(Vector3.forward * 360f * parameters.WheelExplosionRotations, parameters.WheelExplosionDuration, RotateMode.FastBeyond360));
+            }
+            seq.AppendCallback(() => Destroy(gameObject));
         }
 
         private void EnableSectors()
