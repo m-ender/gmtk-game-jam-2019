@@ -1045,6 +1045,8 @@ MonoBehaviour:
   InputBumpStrength: 0.15
   InputBumpDuration: 0.05
   SectorFadeDuration: 0.2
+  ItemEffectDuration: 2
+  ItemEffectDistance: 0.5
 --- !u!4 &433994636
 Transform:
   m_ObjectHideFlags: 0

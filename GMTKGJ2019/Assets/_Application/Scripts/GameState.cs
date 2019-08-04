@@ -147,12 +147,16 @@ namespace GMTKGJ2019
             for (int i = 0; i < parameters.MaxItemSpawningAttempts; ++i)
             {
                 if (item.GetComponent<Collider2D>().OverlapCollider(filter, results) == 0)
-                    break;
+                {
+                    items.Add(item);
+                    return;
+                }
 
                 item.transform.localPosition = GetRandomItemLocation();
             }
 
-            items.Add(item);
+            // We can only get here if we didn't find a location for the item.
+            Destroy(item);
         }
 
         private Vector2 GetRandomItemLocation()

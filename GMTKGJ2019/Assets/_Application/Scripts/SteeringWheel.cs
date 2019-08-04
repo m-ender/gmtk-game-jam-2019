@@ -14,6 +14,15 @@ namespace GMTKGJ2019
 
         [Space(10)]
 
+        [SerializeField] private ItemEffect fastEffectPrefab = null;
+        [SerializeField] private ItemEffect slowEffectPrefab = null;
+        [SerializeField] private ItemEffect freezeEffectPrefab = null;
+        [SerializeField] private ItemEffect cwEffectPrefab = null;
+        [SerializeField] private ItemEffect ccwEffectPrefab = null;
+        [SerializeField] private ItemEffect disableEffectPrefab = null;
+
+        [Space(10)]
+
         [SerializeField] private Direction initialDirection = Direction.None;
 
         [Space(10)]
@@ -30,7 +39,12 @@ namespace GMTKGJ2019
         private float currentSpeed;
         private bool reverse;
         private Direction disabledSector;
-        public Direction CurrentDirection { get; private set; }
+        private Direction currentDirection;
+
+        public Direction SelectedDirection
+            => currentDirection == disabledSector
+                ? Direction.None
+                : currentDirection;
 
         private Tween speedTimer;
         private Tween disabledSectorTimer;
@@ -47,12 +61,16 @@ namespace GMTKGJ2019
         public void Reverse()
         {
             reverse = !reverse;
+
+            StartItemEffect(reverse ? ccwEffectPrefab : cwEffectPrefab);
         }
 
         public void Fast()
         {
             currentSpeed = parameters.FastRotationModifier * parameters.BaseRotationSpeed;
             SetUpSpeedTimer(parameters.SpeedModifierDuration);
+
+            StartItemEffect(fastEffectPrefab);
         }
 
         public void Slow()
@@ -60,6 +78,8 @@ namespace GMTKGJ2019
             speedTimer?.Complete();
             currentSpeed = parameters.SlowRotationModifier * parameters.BaseRotationSpeed;
             SetUpSpeedTimer(parameters.SpeedModifierDuration);
+
+            StartItemEffect(slowEffectPrefab);
         }
 
         public void Freeze()
@@ -67,26 +87,38 @@ namespace GMTKGJ2019
             speedTimer?.Complete();
             currentSpeed = 0f;
             SetUpSpeedTimer(parameters.FreezeDuration);
-        }
 
-        public void AnimateInput()
-        {
-            sectorMap[CurrentDirection].transform
-                .DOLocalMove(
-                    parameters.InputBumpStrength * CurrentDirection.ToVector2(),
-                    parameters.InputBumpDuration)
-                .SetRelative(true)
-                .SetLoops(2, LoopType.Yoyo);
+            StartItemEffect(freezeEffectPrefab);
         }
 
         public void DisableSector(Direction dir)
         {
             disabledSector = dir;
+            DOTween.Complete(sectorMap[disabledSector]);
+            sectorMap[disabledSector].color = disabledColor;
+
             SetUpDisabledSectorTimer(parameters.DisableSectorDuration);
+
+            StartItemEffect(disableEffectPrefab, disabledSector.ToAngle());
         }
 
-        public void EnableSectors()
+        public void AnimateInput()
         {
+            sectorMap[SelectedDirection].transform
+                .DOLocalMove(
+                    parameters.InputBumpStrength * SelectedDirection.ToVector2(),
+                    parameters.InputBumpDuration)
+                .SetRelative(true)
+                .SetLoops(2, LoopType.Yoyo);
+        }
+
+        private void EnableSectors()
+        {
+            if (disabledSector == currentDirection)
+                sectorMap[disabledSector].color = activeColor;
+            else
+                sectorMap[disabledSector].color = inactiveColor;
+
             disabledSector = Direction.None;
         }
 
@@ -109,7 +141,7 @@ namespace GMTKGJ2019
             reverse = false;
             disabledSector = Direction.None;
 
-            CurrentDirection = AngleToDirection(angle);
+            currentDirection = AngleToDirection(angle);
 
             RenderSectors();
         }
@@ -127,8 +159,8 @@ namespace GMTKGJ2019
             if (suspended) return;
 
             angle += Time.deltaTime * currentSpeed * (reverse ? 1 : -1);
-            Direction oldDir = CurrentDirection;
-            CurrentDirection = AngleToDirection(angle);
+            Direction oldDir = currentDirection;
+            currentDirection = AngleToDirection(angle);
 
             UpdateSectors(oldDir);
         }
@@ -156,7 +188,7 @@ namespace GMTKGJ2019
                 if (dir == disabledSector)
                     sector.color = disabledColor;
                 else
-                    sector.color = (dir == CurrentDirection)
+                    sector.color = (dir == currentDirection)
                         ? activeColor
                         : inactiveColor;
             }
@@ -166,10 +198,13 @@ namespace GMTKGJ2019
         {
             hand.localEulerAngles = Vector3.forward * angle;
 
-            if (oldDir != CurrentDirection)
+            if (oldDir != currentDirection)
             {
-                sectorMap[oldDir].DOColor(inactiveColor, parameters.SectorFadeDuration);
-                sectorMap[CurrentDirection].DOColor(activeColor, parameters.SectorFadeDuration);
+                if (oldDir != disabledSector)
+                    sectorMap[oldDir].DOColor(inactiveColor, parameters.SectorFadeDuration);
+
+                if (currentDirection != disabledSector)
+                    sectorMap[currentDirection].DOColor(activeColor, parameters.SectorFadeDuration);
             }
         }
 
@@ -183,9 +218,17 @@ namespace GMTKGJ2019
             case float x when (x >= 225f && x < 315f): result = Direction.East; break;
             }
 
-            return result == disabledSector
-                ? Direction.None
-                : result;
+            return result;
+        }
+
+        private void StartItemEffect(ItemEffect effectPrefab)
+            => StartItemEffect(effectPrefab, 0f);
+
+        private void StartItemEffect(ItemEffect effectPrefab, float angle)
+        {
+            var effect = Instantiate(effectPrefab, transform);
+            effect.transform.localPosition = Vector2.zero;
+            effect.transform.localEulerAngles = Vector3.forward * angle;
         }
     }
 }

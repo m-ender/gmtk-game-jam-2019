@@ -47,6 +47,8 @@ namespace GMTKGJ2019
         public float InputBumpStrength;
         public float InputBumpDuration;
         public float SectorFadeDuration;
+        public float ItemEffectDuration;
+        public float ItemEffectDistance;
 
         public static GameParameters Instance { get; private set; }
 

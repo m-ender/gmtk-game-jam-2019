@@ -70,7 +70,7 @@ namespace GMTKGJ2019
 
             if (Input.GetKeyDown(key))
             {
-                Direction dir = SteeringWheel.CurrentDirection;
+                Direction dir = SteeringWheel.SelectedDirection;
                 if (dir != Direction.None)
                 {
                     SteeringWheel.AnimateInput();

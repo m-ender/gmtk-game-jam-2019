@@ -518,6 +518,18 @@ MonoBehaviour:
   eastSector: {fileID: 9011650410035629829}
   southSector: {fileID: 7044897990205281722}
   westSector: {fileID: 2559597219041879162}
+  fastEffectPrefab: {fileID: 55323312322652013, guid: b7dbe4c906a52a5419952d0c9c514791,
+    type: 3}
+  slowEffectPrefab: {fileID: 55323312322652013, guid: 84d3aafb0c4a11440b9d4fab7d6cfa8e,
+    type: 3}
+  freezeEffectPrefab: {fileID: 55323312322652013, guid: e7297942ef226cb4e86dc90829d539c2,
+    type: 3}
+  cwEffectPrefab: {fileID: 55323312322652013, guid: 850ddaa53048635458c12de27726f941,
+    type: 3}
+  ccwEffectPrefab: {fileID: 55323312322652013, guid: 138bb1c061b7c594ab122c07eb53c91f,
+    type: 3}
+  disableEffectPrefab: {fileID: 55323312322652013, guid: 4819031f6419b974c827496a1a493e55,
+    type: 3}
   initialDirection: 0
   disabledColor: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
   inactiveColor: {r: 1, g: 1, b: 1, a: 1}
