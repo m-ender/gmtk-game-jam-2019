@@ -1019,7 +1019,7 @@ MonoBehaviour:
   ArenaWidth: 25
   ArenaHeight: 15
   SpawningDistanceFromWall: 1
-  BikeBaseSpeed: 3
+  BikeBaseSpeed: 2.5
   BikeFastModifier: 2
   BikeSlowModifier: 0.5
   BikeBoostDuration: 1
