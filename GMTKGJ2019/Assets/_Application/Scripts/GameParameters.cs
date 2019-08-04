@@ -39,6 +39,12 @@ namespace GMTKGJ2019
         public int NextMatchDelay;
         public float CalibrationTime;
 
+        [Header("Juice")]
+        public float CameraShakeDuration;
+        public float CameraShakeStrength;
+        public int CameraShakeVibrato;
+        public float CameraShakeRandomness;
+
         public static GameParameters Instance { get; private set; }
 
         private void Awake()

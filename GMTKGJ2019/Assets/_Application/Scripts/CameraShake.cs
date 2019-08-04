@@ -1,42 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using DG.Tweening;
 
-public class CameraShake : MonoBehaviour
+namespace GMTKGJ2019
 {
-    private Transform targetTransform;
-    private float shakeDuration = 0f;
-    private float shakeMagnitude = 0.7f;
-    private float dampingSpeed = 1.0f;
-    Vector3 initialPosition;
-
-    public void TriggerShake()
+    [RequireComponent(typeof(Camera))]
+    public class CameraShake : MonoBehaviour
     {
-        shakeDuration = 0.25f;
-    }
+        private new Camera camera;
 
-    private void Awake()
-    {
-        targetTransform = GetComponent<Transform>();
-    }
-
-    private void Start()
-    {
-        initialPosition = targetTransform.localPosition;
-    }
-
-    private void Update()
-    {
-        if (shakeDuration > 0)
+        private void Awake()
         {
-            targetTransform.localPosition = initialPosition + Random.insideUnitSphere * shakeMagnitude;
-
-            shakeDuration -= Time.deltaTime * dampingSpeed;
+            camera = GetComponent<Camera>();
         }
-        else
+
+        public void TriggerShake()
         {
-            shakeDuration = 0f;
-            targetTransform.localPosition = initialPosition;
+            GameParameters parameters = GameParameters.Instance;
+            camera.DOShakePosition(
+                parameters.CameraShakeDuration,
+                parameters.CameraShakeStrength,
+                parameters.CameraShakeVibrato,
+                parameters.CameraShakeRandomness);
         }
     }
 }

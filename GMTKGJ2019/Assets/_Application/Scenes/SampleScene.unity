@@ -1025,6 +1025,10 @@ MonoBehaviour:
   MatchCountDown: 3
   NextMatchDelay: 5
   CalibrationTime: 2
+  CameraShakeDuration: 0.25
+  CameraShakeStrength: 0.3
+  CameraShakeVibrato: 100
+  CameraShakeRandomness: 90
 --- !u!4 &433994636
 Transform:
   m_ObjectHideFlags: 0
