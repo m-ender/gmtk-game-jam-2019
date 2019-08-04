@@ -55,6 +55,12 @@ namespace GMTKGJ2019
             Turn(initialDirection);
         }
 
+        public void StopBike()
+        {
+            SetSpeed(0f);
+            started = false;
+        }
+
         private void Update()
         {
             if (!started)
@@ -82,7 +88,7 @@ namespace GMTKGJ2019
             if (destroyed) return;
 
             speedTimer?.Complete();
-            Destroy(transform.parent.gameObject);
+            Destroy(gameObject);
             Destroyed?.Invoke();
             destroyed = true;
         }
@@ -138,6 +144,8 @@ namespace GMTKGJ2019
 
         private void SetSpeed(float speed)
         {
+            if (!started) return;
+
             currentSpeed = speed;
             rigidBody.velocity = currentSpeed * currentDirection.ToVector2();
         }
