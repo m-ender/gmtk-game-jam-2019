@@ -116,6 +116,8 @@ namespace GMTKGJ2019
         {
             speedTimer?.Complete();
             disabledSectorTimer?.Complete();
+            foreach (var sector in sectorMap.Values)
+                DOTween.Complete(sector.transform);
         }
 
         private void Update()
