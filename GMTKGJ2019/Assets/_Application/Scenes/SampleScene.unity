@@ -1013,12 +1013,13 @@ MonoBehaviour:
   BaseRotationSpeed: 180
   FastRotationModifier: 2
   SlowRotationModifier: 0.5
-  MaxItems: 5
+  MaxItems: 10
   SpeedModifierDuration: 3
   FreezeDuration: 1
   DisableSectorDuration: 3
   MinItemSpawnDelay: 1
   MaxItemSpawnDelay: 3
+  MaxItemSpawningAttempts: 10
   MasterVolume: 0.5
   MatchCountDown: 3
   NextMatchDelay: 5

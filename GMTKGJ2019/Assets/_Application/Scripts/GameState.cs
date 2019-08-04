@@ -127,13 +127,35 @@ namespace GMTKGJ2019
 
         private void SpawnItem()
         {
-            System.Random rng = Random.RNG;
             audioSource.PlayOneShot(itemSpawnSound);
-            items.Add(Instantiate(
-                itemPrefabs[rng.Next(itemPrefabs.Length)],
-                new Vector3((float)rng.NextDouble() * 8f - 4f, (float)rng.NextDouble() * 8f - 4f, 0),
+
+            GameObject item = Instantiate(
+                itemPrefabs[Random.RNG.Next(itemPrefabs.Length)],
+                GetRandomItemLocation(),
                 Quaternion.identity,
-                arena));
+                arena);
+
+            var filter = new ContactFilter2D().NoFilter();
+            var results = new Collider2D[1];
+            for (int i = 0; i < parameters.MaxItemSpawningAttempts; ++i)
+            {
+                if (item.GetComponent<Collider2D>().OverlapCollider(filter, results) == 0)
+                    break;
+
+                item.transform.localPosition = GetRandomItemLocation();
+            }
+
+            items.Add(item);
+        }
+
+        private Vector2 GetRandomItemLocation()
+        {
+            float width = parameters.ArenaWidth - 2;
+            float height = parameters.ArenaHeight - 2;
+
+            return new Vector2(
+                (float)Random.RNG.NextDouble() * width - width / 2,
+                (float)Random.RNG.NextDouble() * height - height / 2);
         }
 
         private void AdvanceCountdown()

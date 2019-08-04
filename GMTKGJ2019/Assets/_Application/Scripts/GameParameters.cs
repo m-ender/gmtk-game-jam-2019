@@ -29,6 +29,7 @@ namespace GMTKGJ2019
         public float DisableSectorDuration;
         public float MinItemSpawnDelay;
         public float MaxItemSpawnDelay;
+        public int MaxItemSpawningAttempts;
 
         [Header("Audio")]
         public float MasterVolume;
