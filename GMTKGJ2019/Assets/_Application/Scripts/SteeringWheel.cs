@@ -96,6 +96,9 @@ namespace GMTKGJ2019
         {
             disabledSector = dir;
             DOTween.Complete(sectorMap[disabledSector]);
+
+            if (disabledSector != Direction.None)
+                EnableSectors();
             sectorMap[disabledSector].color = disabledColor;
 
             SetUpDisabledSectorTimer(parameters.DisableSectorDuration);
