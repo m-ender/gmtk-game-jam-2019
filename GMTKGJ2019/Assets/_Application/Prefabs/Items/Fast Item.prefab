@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 2826471825808641594, guid: 25303d6479a094d4dbdb1b8c489e8af8,
         type: 3}
       propertyPath: m_Name
-      value: Item
+      value: Fast Item
       objectReference: {fileID: 0}
     - target: {fileID: 8614849922939425902, guid: 25303d6479a094d4dbdb1b8c489e8af8,
         type: 3}
