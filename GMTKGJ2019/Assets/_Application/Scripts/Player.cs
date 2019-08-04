@@ -66,7 +66,7 @@ namespace GMTKGJ2019
             if (!started)
                 return;
 
-            currentWall.UpdateEnd(transform.localPosition);
+            UpdateWall();
 
             if (Input.GetKeyDown(key))
             {
@@ -83,10 +83,16 @@ namespace GMTKGJ2019
             }
         }
 
+        private void UpdateWall()
+        {
+            currentWall.UpdateEnd(transform.localPosition);
+        }
+
         public void DestroyPlayer()
         {
             if (destroyed) return;
 
+            UpdateWall();
             speedTimer?.Complete();
             Destroy(gameObject);
             Destroyed?.Invoke();
