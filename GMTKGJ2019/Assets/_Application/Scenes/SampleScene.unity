@@ -1017,7 +1017,12 @@ MonoBehaviour:
   SpeedModifierDuration: 3
   FreezeDuration: 1
   DisableSectorDuration: 3
+  MinItemSpawnDelay: 1
+  MaxItemSpawnDelay: 3
   MasterVolume: 0.5
+  MatchCountDown: 3
+  NextMatchDelay: 5
+  CalibrationTime: 2
 --- !u!4 &433994636
 Transform:
   m_ObjectHideFlags: 0

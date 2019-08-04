@@ -117,12 +117,12 @@ namespace GMTKGJ2019
                 player.ItemCollected += (item) => OnPlayerItemCollected(playerId, item);
             }
 
-            countdown = 3;
+            countdown = parameters.MatchCountDown;
             countdownText.gameObject.SetActive(true);
             countdownText.text = countdown.ToString();
 
             audioSource.PlayOneShot(countdownSound);
-            DOTween.Sequence().InsertCallback(1f, AdvanceCountdown).SetLoops(3);
+            DOTween.Sequence().InsertCallback(1f, AdvanceCountdown).SetLoops(parameters.MatchCountDown);
         }
 
         private void SpawnItem()
@@ -194,7 +194,7 @@ namespace GMTKGJ2019
             else
                 resultScreen.DisplayDraw();
 
-            DOTween.Sequence().InsertCallback(3f, () => {
+            DOTween.Sequence().InsertCallback(parameters.NextMatchDelay, () => {
                 resultScreen.Hide();
                 StartMatch();
             });
@@ -209,7 +209,9 @@ namespace GMTKGJ2019
 
             if (timeToNextItem < 0)
             {
-                timeToNextItem = (float)Random.RNG.NextDouble() * 2 + 1;
+                float min = parameters.MinItemSpawnDelay;
+                float max = parameters.MaxItemSpawnDelay;
+                timeToNextItem = (float)Random.RNG.NextDouble() * (max - min) + min;
 
                 if (items.Count < parameters.MaxItems)
                     SpawnItem();

@@ -9,22 +9,29 @@ namespace GMTKGJ2019
     {
         private static readonly int MaximumPlayers = 4;
 
-        private static readonly double TotalCalibrationTime = TimeSpan.FromSeconds(2).TotalSeconds;
+        //private static readonly double TotalCalibrationTime = TimeSpan.FromSeconds(2).TotalSeconds;
 
         [SerializeField] private PlayerUI[] playerUIs = null;
 
         [SerializeField] private ProgressBar timeLeft = null;
 
         private bool isCalibrationRunning = false;
-        private double calibrationTimeLeft = TotalCalibrationTime;
+        private double totalCalibrationTime;
+        private double calibrationTimeLeft;
 
         private readonly List<KeyCode> keys = new List<KeyCode>();
 
         public event Action<List<KeyCode>> PlayerKeysSelected;
 
+        private void Awake()
+        {
+            totalCalibrationTime = GameParameters.Instance.CalibrationTime;
+            calibrationTimeLeft = totalCalibrationTime;
+        }
+
         private void UpdateUI()
         {
-            timeLeft.SetProgress((float)((100f / TotalCalibrationTime) * calibrationTimeLeft));
+            timeLeft.SetProgress((float)((100f / totalCalibrationTime) * calibrationTimeLeft));
         }
 
         private void Update()
@@ -36,7 +43,7 @@ namespace GMTKGJ2019
 
             if (!isCalibrationRunning)
             {
-                calibrationTimeLeft = TotalCalibrationTime;
+                calibrationTimeLeft = totalCalibrationTime;
                 UpdateUI();
                 return;
             }
