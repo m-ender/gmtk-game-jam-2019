@@ -1,5 +1,4 @@
 ﻿using DG.Tweening;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +21,8 @@ namespace GMTKGJ2019
         [SerializeField] private Color disabledColor = Color.white;
         [SerializeField] private Color inactiveColor = Color.white;
         [SerializeField] private Color activeColor = Color.white;
+
+        private int tweenID;
 
         private GameParameters parameters;
 
@@ -70,7 +71,6 @@ namespace GMTKGJ2019
 
         public void AnimateInput()
         {
-            GameParameters parameters = GameParameters.Instance;
             sectorMap[CurrentDirection].transform
                 .DOLocalMove(
                     parameters.InputBumpStrength * CurrentDirection.ToVector2(),
@@ -100,6 +100,8 @@ namespace GMTKGJ2019
                 { Direction.West, westSector },
             };
 
+            tweenID = 100000 + (int)initialDirection;
+
             parameters = GameParameters.Instance;
 
             angle = initialDirection.ToAngle();
@@ -125,9 +127,10 @@ namespace GMTKGJ2019
             if (suspended) return;
 
             angle += Time.deltaTime * currentSpeed * (reverse ? 1 : -1);
+            Direction oldDir = CurrentDirection;
             CurrentDirection = AngleToDirection(angle);
 
-            RenderSectors();
+            UpdateSectors(oldDir);
         }
 
         private void SetUpSpeedTimer(float timeout)
@@ -156,6 +159,17 @@ namespace GMTKGJ2019
                     sector.color = (dir == CurrentDirection)
                         ? activeColor
                         : inactiveColor;
+            }
+        }
+
+        private void UpdateSectors(Direction oldDir)
+        {
+            hand.localEulerAngles = Vector3.forward * angle;
+
+            if (oldDir != CurrentDirection)
+            {
+                sectorMap[oldDir].DOColor(inactiveColor, parameters.SectorFadeDuration);
+                sectorMap[CurrentDirection].DOColor(activeColor, parameters.SectorFadeDuration);
             }
         }
 

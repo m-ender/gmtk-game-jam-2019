@@ -1044,6 +1044,7 @@ MonoBehaviour:
   CameraShakeRandomness: 90
   InputBumpStrength: 0.15
   InputBumpDuration: 0.05
+  SectorFadeDuration: 0.2
 --- !u!4 &433994636
 Transform:
   m_ObjectHideFlags: 0

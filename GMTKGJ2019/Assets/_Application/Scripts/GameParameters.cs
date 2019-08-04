@@ -46,6 +46,7 @@ namespace GMTKGJ2019
         public float CameraShakeRandomness;
         public float InputBumpStrength;
         public float InputBumpDuration;
+        public float SectorFadeDuration;
 
         public static GameParameters Instance { get; private set; }
 
