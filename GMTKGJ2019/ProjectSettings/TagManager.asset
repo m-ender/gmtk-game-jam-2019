@@ -44,9 +44,6 @@ TagManager:
   - name: Floor
     uniqueID: 4172510733
     locked: 0
-  - name: Steering Wheel
-    uniqueID: 2284538077
-    locked: 0
   - name: Wall
     uniqueID: 344314227
     locked: 0
@@ -55,4 +52,7 @@ TagManager:
     locked: 0
   - name: Bike
     uniqueID: 1856686531
+    locked: 0
+  - name: Steering Wheel
+    uniqueID: 2284538077
     locked: 0

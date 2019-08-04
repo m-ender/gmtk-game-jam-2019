@@ -9,15 +9,33 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="135.06926mm"
-   height="95.569mm"
-   viewBox="0 0 135.06926 95.569008"
+   width="137.75591mm"
+   height="50.181419mm"
+   viewBox="0 0 137.75591 50.181423"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="content-sector.svg">
+   sodipodi:docname="content-sector.svg"
+   inkscape:export-filename="D:\Development\Repositories\gmtk-game-jam-2019\asset-creation\control-sector-128.png"
+   inkscape:export-xdpi="23.601168"
+   inkscape:export-ydpi="23.601168">
   <defs
      id="defs2">
+    <marker
+       inkscape:stockid="TriangleOutS"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutS"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path979"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.2)"
+         inkscape:connector-curvature="0" />
+    </marker>
     <marker
        inkscape:stockid="Arrow1Lend"
        orient="auto"
@@ -42,8 +60,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="229.24721"
-     inkscape:cy="260.81441"
+     inkscape:cx="61.595766"
+     inkscape:cy="111.5604"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -56,7 +74,8 @@
      inkscape:window-height="1377"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     inkscape:pagecheckerboard="false" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -73,22 +92,18 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-2.6993939e-6,-201.43098)">
+     transform="translate(1.3433119,-200.4799)">
     <path
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.29490981;stroke-opacity:1"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:8.29606342;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 260.50391,0.59179688 A 359.86199,359.86381 0 0 0 0.7890625,105.95508 l 74.2441405,74.24609 a 254.86381,254.86381 0 0 1 360.431637,0 l 74.24414,-74.24609 A 359.86199,359.86381 0 0 0 260.50391,0.59179688 Z"
+       transform="matrix(0.26458333,0,0,0.26458333,2.6993939e-6,201.43098)"
        id="path34"
-       sodipodi:type="arc"
-       sodipodi:cx="67.534637"
-       sodipodi:cy="296.79144"
-       sodipodi:rx="95.213486"
-       sodipodi:ry="95.213966"
-       sodipodi:start="3.9269908"
-       sodipodi:end="5.4977871"
-       d="m 0.2085349,229.465 a 95.213486,95.213966 0 0 1 134.6522051,0 l -67.326103,67.32644 z" />
-    <path
-       style="fill:#000000;stroke:#000000;stroke-width:0.26458398px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 61.014541,248.24081 h 12.095237 v -12.0953 h 8.882441 l -14.74107,-14.74114 -14.174108,14.17417 h 7.9375 z"
-       id="path1139"
        inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:5.95823145;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutS)"
+       d="m 67.534641,224.35296 v -9.34833"
+       id="path829"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
   </g>
 </svg>
